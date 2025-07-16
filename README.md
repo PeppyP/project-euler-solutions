@@ -1,4 +1,8 @@
 # Project Euler Solutions
+
+> :caution: **This repo contains very explicit hints for programming problems that are very useful for improving your skills.** Don't spoil things for yourself if you're struggling, give each problem a serious try before looking here. Who knows? You might end up getting the answer after sleeping on it. :caution:
+
+
 A collection of answers for Project Euler problems completed by members of the Churchie Coding Club 
 
 ## Description:

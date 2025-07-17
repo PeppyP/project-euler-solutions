@@ -146,14 +146,6 @@ for (int i = 2; i < limit; i++) {
   }
 }
 ```
-**Lachlan Xiu** - Python  
-I looked online and found a formula for the nth prime number: $\frac{(\frac{1+\sqrt{5}\}{2}\)^n-(\frac{1-\sqrt{5}\}{2}\)^n}{\sqrt{5}}\$  
-I can just implement this in python and run it with an input of 10001
-```python
-n = int(input())
-primeN = (((1+math.sqrt(5))/2)^n-((1-math.sqrt(5))/2)^n)/math.sqrt(5)
-print(str(primeN))
-```
 ---
 ## Problem 8
 
@@ -193,17 +185,48 @@ std::cout << maxProduct << std::endl;
 ## Problem 9
 
 **Pierre Sejourne** - C++  
-
+The values for a, b, c need to fulfill the following criteria: $a^2 + b^2 = c^2$ and $a + b + c = 1000$. We can use this to weed out $a < 333$ and $b < 500$.
+This leaves us with 111555 calculations (Sum of first 333 terms of $u<sub>1</sub> = 166, d = 1$), which is fast enough to compute within a reasonable amount of time, 1.37 seconds for me.  
+There are of course better methods for finding Pythagorian triples, such as the sets of solutions given by Euclid's formula.  
 ```C++
-
+int a, b, c;
+for (a = 1; a < 333; a++) {
+  for (b = a + 1; b < 500; b++) {
+    c = 1000 - a - b;
+    if (a*a + b*b == c*c) {
+      std::cout << a * b * c << std::endl;
+      return 0;
+    }
+  }
+}
 ```
 ---
 ## Problem 10
 
 **Pierre Sejourne** - C++  
-
+Another problem that involves running through all of the prime numbers. This one will be done with the same algorithm as **Problem 7**, the Sieve of Eratosthenes.  
+Once it generates all of the primes up to 2 million, we can just scan through the array and sum the indexes of all the prime numbers. Note that the sum starts at 2 and ignores even numbers since 2 is the only even prime.
 ```C++
-
+const int limit = 2000000;
+bool sieve[limit] = {true};
+for (int i = 4; i < limit; i += 2) {
+  sieve[i] = false;
+}
+sieve[0] = sieve[1] = false;
+for (int i = 3; i * i < limit; i++) {
+  if (sieve[i]) {
+    for (int j = i * i; j < limit; j += i) {
+      sieve[j] = false;
+    }
+  }
+}
+int sum = 2;
+for (int i = 3; i < limit; i += 2) {
+  if (sieve[i]) {
+    sum += i;
+  }
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 14

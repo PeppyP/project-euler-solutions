@@ -31,10 +31,15 @@ print(str(sum(x for x in range(1, 1000, 1) if (x%3 == 0 or x%5 == 0))))
 ## Problem 4
 
 **Pierre Sejourne** - C++  
-  
+
 ---
 ## Problem 5
 
-**Pierre Sejourne** - Maths&Logic  
-  
+**Pierre Sejourne** - Maths & Logic  
+The smallest number that has all of a set of numbers as factors is the Lowest Common Multiple (LCM) of those numbers.  
+There are several ways to find an LCM, but the easiest is to multiply each unique prime factor among the numbers.  
+The prime factors of 1-20 are $1, 2, 3, 2^2, 5, 2\cdot3, 7, 2^3, 3^2, 2\cdot5, 11, 2^2\cdot3, 13, 2\cdot7, 3\cdot5, 2^4, 17, 2\cdot3^2, 19, 2^2\cdot5$.  
+The highest power of each factor among them are $1, 2^4, 3^2, 5, 7, 11, 13, 17, 19$.  
+Multiplying them together gives the answer, $1\cdot2^4\cdot3^2\cdot5\cdot7\cdot11\cdot13\cdot17\cdot19$.  
+
 ---

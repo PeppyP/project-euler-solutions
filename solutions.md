@@ -155,6 +155,57 @@ primeN = (((1+math.sqrt(5))/2)^n-((1-math.sqrt(5))/2)^n)/math.sqrt(5)
 print(str(primeN))
 ```
 ---
+## Problem 8
+
+**Pierre Sejourne** - C++  
+One thing to note is that as we move the 'head', the 13 digits that we are multiplying, along the string, the product is effectively divided by the previous digit and scaled by the next digit.  
+So, to find the highest product we can just ignore any sequences that have a last digit that is lower than or equal to the next digit. Otherwise, we can multiply the digits and keep the highest of those multiples. This will take 1000 - 13 multiplications minus how many are removed from consideration by the greedy process.
+```C++
+long long productOfDigits(const string& digits, int start, int length) {
+    long long product = 1;
+    for (int i = start; i < start + length; ++i) {
+        if (digits[i] == '0') {
+          return 0;
+        }
+        product *= digits[i] - '0';
+    }
+    return product;
+}
+
+string raw = "73167176531330624919225119674426574742355349194934...[The string]";
+while (i + 13 <= raw.size()) {
+  if (i + 13 < raw.size() && raw[i + 13] >= raw[i + 12]) {
+    i++;
+    continue;
+  }
+
+  long long currentProduct = productOfDigits(raw, i, windowSize);
+  if (currentProduct > maxProduct) {
+    maxProduct = currentProduct;
+  }
+
+  i++;
+}
+
+std::cout << maxProduct << std::endl;
+```
+---
+## Problem 9
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
+## Problem 10
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
 ## Problem 14
 
 **Pierre Sejourne** - C++  

@@ -146,6 +146,14 @@ for (int i = 2; i < limit; i++) {
   }
 }
 ```
+**Lachlan Xiu** - Python  
+I looked online and found a formula for the nth prime number: $\frac{(\frac{1+\sqrt{5}\}{2}\)^n-(\frac{1-\sqrt{5}\}{2}\)^n}{\sqrt{5}}\$  
+I can just implement this in python and run it with an input of 10001
+```python
+n = int(input())
+primeN = (((1+math.sqrt(5))/2)^n-((1-math.sqrt(5))/2)^n)/math.sqrt(5)
+print(str(primeN))
+```
 ---
 ## Problem 14
 

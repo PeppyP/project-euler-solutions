@@ -1,6 +1,6 @@
 # Project Euler Solutions
 
-> :stop_sign: **This repo contains very explicit hints for programming problems that are useful for improving your skills.** :stop_sign: Don't spoil things for yourself without giving it a serious try. 
+> :stop_sign: **This repo contains very explicit hints for programming problems that are non-repeatable.** :stop_sign: Don't spoil things for yourself without giving it a serious try. 
 
 
 A collection of answers for Project Euler problems completed by members of the Churchie Coding Club 

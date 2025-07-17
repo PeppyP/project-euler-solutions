@@ -64,7 +64,32 @@ std::cout << n << std::endl;
 ## Problem 4
 
 **Pierre Sejourne** - C++  
+The questions asks for two three-digit numbers that form a palindrome. This means that we have to look through each combination of 100-999, determine whether it's a palindrome, then store the highest palindrome that we find.  
+The second loop starts from the first factor since lower numbers would have already been tested, and ends when a palindrome is found. This is because we check the palindromes from descending factors as we're searching for the maximum, so any further tests will only yield lower numbers.
+```C++
+bool isPalindrome(int n) {
+    int original = n;
+    int reversed = 0;
+    while (n > 0) {
+        int digit = n % 10;
+        reversed = reversed * 10 + digit;
+        n /= 10;
+    }
+    return original == reversed;
+}
 
+int max = 0;
+for (int i = 999; i >= 100; --i) {
+  for (int j = i; j >= 100; --j) {
+    if (i * j <= max) break;
+    if (isPalindrome(i * j)) {
+      max = i * j;
+      break;
+    }
+  }
+}
+std::cout << max << std::endl;
+```
 ---
 ## Problem 5
 

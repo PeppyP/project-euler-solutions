@@ -43,7 +43,23 @@ std::cout << sum << std::endl;
 ## Problem 3
 
 **Pierre Sejourne** - C++  
-  
+To find the largest prime factor of a composite number x, we can divide x repeatedly, starting with a prime number, until you end up with another prime or exhaust all other options. The last value after the divisions end is the largest prime factor. This is because at every step, all smaller prime divisors are divided out.  
+Since 2 is the only even prime number, we divide x by 2 repeatedly until it is no longer divisible, or until it becomes 2 itself. This removes all even factors.  
+Once all factors of 2 are removed, any remaining factors must be odd. We loop through odd numbers only starting from 3, incrementing by 2, which skips all even composites.  
+We only check factors up to $\sqrt{x}$ because if x has any factor greater than $\sqrt{x}$, it must also have a corresponding factor less than $\sqrt{x}$.  
+Once we divide out all small prime factors, if any factor remains, it must itself be prime.  
+```C++
+unsigned long long n;
+std::cin >> n;
+while (n%2 == 0 && n != 2) {
+  n /= 2;
+}
+for (unsigned long long factor = 3; factor * factor <= n; factor += 2) {
+  while (n%factor == 0 && n != factor)
+    n /= factor;
+}
+std::cout << n << std::endl;
+```
 ---
 ## Problem 4
 

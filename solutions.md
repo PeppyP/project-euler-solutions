@@ -21,7 +21,24 @@ print(str(sum(x for x in range(1, 1000, 1) if (x%3 == 0 or x%5 == 0))))
 ## Problem 2
 
 **Pierre Sejourne** - C++  
-  
+This problem requires us to consider every even Fibonacci number, so we will need to calculate every one, the most efficient way to do this is to simply iterate through every value by repeatedly adding variables to each other and adding to a sum when the head variable is even.  
+There isn't much to say, its just a simple problem with an uncomplicated solution.  
+```C++
+unsigned long long n;
+std::cin >> n;
+unsigned long long sum = 0;
+unsigned long long a = 1;
+unsigned long long b = 2;
+while (b <= n) {
+  if (b%2 == 0) {
+        sum += b;
+  }
+  unsigned long long c = a + b;
+  a = b;
+  b = c;
+}
+std::cout << sum << std::endl;
+```
 ---
 ## Problem 3
 

@@ -101,3 +101,24 @@ The highest power of each factor among them are $1, 2^4, 3^2, 5, 7, 11, 13, 17, 
 Multiplying them together gives the answer, $1\cdot2^4\cdot3^2\cdot5\cdot7\cdot11\cdot13\cdot17\cdot19$.  
 
 ---
+## Problem 6
+
+**Pierre Sejourne** - C++  
+The sum of all natural numbers to x is given by $\frac{x * (x + 1)}{2}\$, squaring this gives us the square of the sum of all natural numbers up to x, $\frac{x^2 * (x + 1)^2}{4}\$.  
+The sum of the squares of all natural numbers up to x is given by $\frac{x * (x + 1) * (2x + 1)}{6}\$.  
+The difference between these sums is $\frac{x^2 * (x + 1)^2}{4}\ - \frac{x * (x + 1) * (2x + 1)}{6}\ = \frac{3x^4 + 6x^3 + 3x^2}{12}\ - \frac{4x^3 + 6x^2 + 2x}{12}\ = \frac{3x^4 + 2x^3 - 3x^2 - 2x}{12}\$.  
+This value is what the problem is asking for, so that's all we need to do.
+```C++
+unsigned long long n;
+std::cin >> n;
+std::cout << ( 3*n*n*n*n + 2*n*n*n - 3*n*n - 2*n )/12 << std::endl;
+```
+---
+## Problem 7
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---

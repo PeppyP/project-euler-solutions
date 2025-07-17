@@ -117,6 +117,87 @@ std::cout << ( 3*n*n*n*n + 2*n*n*n - 3*n*n - 2*n )/12 << std::endl;
 ## Problem 7
 
 **Pierre Sejourne** - C++  
+There are many ways to find prime numbers, and I contemplated "use OEIS" here as a joke. Sadly, I doubt my humor would be appreciated by readers.  
+Anyway, I decided to implement a sieve of Eratosthenes since I was the first thing I thought of. This algorithm "finds" primes by sequentially disqualifying all non-prime numbers.  
+Each number is represented by a boolean in an array that shows whether that number is prime. The array is initalised as all true, except for 0 and 1, and every even number greater than 2.  
+Then, for each prime element, disqualify all multiples of it as they have that prime as a factor. You are left with an array where the nth element tells you if n is prime or not. You can then search for the 10,001th true in the array. Thanks to the [prime-counting function](https://www.mdpi.com/2227-7390/12/17/2624), we can know that 10001th prime will be roughly within the first 150,000 natural numbers, so that will be the size of our sieve. 
+```C++
+const int limit = 150000;
+bool sieve[limit] = {true};
+for (int i = 4; i < limit; i += 2) {
+  sieve[i] = false;
+}
+sieve[0] = sieve[1] = false;
+for (int i = 3; i * i < limit; i++) {
+  if (sieve[i]) {
+    for (int j = i * i; j < limit; j += i) {
+      sieve[j] = false;
+    }
+  }
+}
+int count = 0;
+for (int i = 2; i < limit; i++) {
+  if (sieve[i]) {
+    count++;
+    if (count == 10001) {
+      std::cout << i << std::endl;
+      break;
+    }
+  }
+}
+```
+---
+## Problem 14
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
+## Problem 19
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
+## Problem 21
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
+## Problem 23
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
+## Problem 24
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
+## Problem 31
+
+**Pierre Sejourne** - C++  
+
+```C++
+
+```
+---
+## Problem 34
+
+**Pierre Sejourne** - C++  
 
 ```C++
 

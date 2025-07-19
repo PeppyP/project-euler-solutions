@@ -256,9 +256,39 @@ std::cout << sum << std::endl;
 ## Problem 14
 
 **Pierre Sejourne** - C++
-
+The [Collatz conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) is a well-studied mathematics theorem that asks if a recursive sequence terminates for any starting value. So far, all starting values have been found to terminate after some number of terms.
+We can compute the number of terms in a given Collatz sequence fairly easily, though repeatedly calculating the entire chain for long starting values takes time. To improve performance, the program stores the sequence lengths of previously computed values in a vector. This reduces the number of repeated calculations dramatically, particularly for values that appear in multiple sequences. 
+A recursive function computes and memoizes sequence lengths for numbers under one million. For values larger than that it computes them on the fly but does not store them. Then we can check each starting value and record the one that generates the longest sequence.
 ```C++
+long long collatzLength(long long n, std::vector<int>& cache) {
+  if (n < 1000000 && cache[n] != 0) {
+    return cache[n];
+  }
+  long long next;
+  if (n % 2 == 0)
+    next = n / 2;
+  else {
+    next = 3 * n + 1;
+  }
+  long long length = 1 + collatzLength(next, cache);
+  if (n < 1000000) {
+    cache[n] = length;
+  }
+  return length;
+}
 
+std::vector<int> cache(1000000, 0);
+cache[1] = 1;
+int maxStart = 1;
+int maxLength = 1;
+for (int i = 2; i < 1000000; i++) {
+  int len = collatzLength(i, cache);
+  if (len > maxLength) {
+    maxLength = len;
+    maxStart = i;
+  }
+}
+std::cout << maxStart << std::endl;
 ```
 ---
 ## Problem 15

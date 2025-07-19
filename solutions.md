@@ -117,7 +117,7 @@ std::cout << ( 3*n*n*n*n + 2*n*n*n - 3*n*n - 2*n )/12 << std::endl;
 ## Problem 7
 
 **Pierre Sejourne** - C++  
-There are many ways to find prime numbers, and I contemplated "use OEIS" here as a joke. Sadly, I doubt my humor would be appreciated by readers.  
+There are many ways to find prime numbers, and I contemplated "use OEIS" here as a joke. Sadly, I doubt my humor would be appreciated.  
 Anyway, I decided to implement a sieve of Eratosthenes since I was the first thing I thought of. This algorithm "finds" primes by sequentially disqualifying all non-prime numbers.  
 Each number is represented by a boolean in an array that shows whether that number is prime. The array is initalised as all true, except for 0 and 1, and every even number greater than 2.  
 Then, for each prime element, disqualify all multiples of it as they have that prime as a factor. You are left with an array where the nth element tells you if n is prime or not. You can then search for the 10,001th true in the array. Thanks to the [prime-counting function](https://www.mdpi.com/2227-7390/12/17/2624), we can know that 10001th prime will be roughly within the first 150,000 natural numbers, so that will be the size of our sieve. 
@@ -153,9 +153,9 @@ for (int i = 3; i < limit; i += 2) {
 One thing to note is that as we move the 'head', the 13 digits that we are multiplying, along the string, the product is effectively divided by the previous digit and scaled by the next digit.  
 So, to find the highest product we can just ignore any sequences that have a last digit that is lower than or equal to the next digit. Otherwise, we can multiply the digits and keep the highest of those multiples. This will take 1000 - 13 multiplications minus how many are removed from consideration by the greedy process.
 ```C++
-long long productOfDigits(const string& digits, int start, int length) {
+long long productOfDigits(const string& digits, int start) {
     long long product = 1;
-    for (int i = start; i < start + length; ++i) {
+    for (int i = start; i < start + 13; ++i) {
         if (digits[i] == '0') {
           return 0;
         }
@@ -171,7 +171,7 @@ while (i + 13 <= raw.size()) {
     continue;
   }
 
-  long long currentProduct = productOfDigits(raw, i, windowSize);
+  long long currentProduct = productOfDigits(raw, i);
   if (currentProduct > maxProduct) {
     maxProduct = currentProduct;
   }

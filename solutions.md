@@ -123,11 +123,11 @@ Each number is represented by a boolean in an array that shows whether that numb
 Then, for each prime element, disqualify all multiples of it as they have that prime as a factor. You are left with an array where the nth element tells you if n is prime or not. You can then search for the 10,001th true in the array. Thanks to the [prime-counting function](https://www.mdpi.com/2227-7390/12/17/2624), we can know that 10001th prime will be roughly within the first 150,000 natural numbers, so that will be the size of our sieve. 
 ```C++
 const int limit = 150000;
-bool sieve[limit] = {true};
-for (int i = 4; i < limit; i += 2) {
-  sieve[i] = false;
+bool sieve[limit] = {};
+for (int i = 3; i < limit; i += 2) {
+  sieve[i] = true;
 }
-sieve[0] = sieve[1] = false;
+sieve[2] = true;
 for (int i = 3; i * i < limit; i++) {
   if (sieve[i]) {
     for (int j = i * i; j < limit; j += i) {
@@ -135,8 +135,8 @@ for (int i = 3; i * i < limit; i++) {
     }
   }
 }
-int count = 0;
-for (int i = 2; i < limit; i++) {
+int count = 1;
+for (int i = 3; i < limit; i += 2) {
   if (sieve[i]) {
     count++;
     if (count == 10001) {
@@ -208,12 +208,12 @@ Another problem that involves running through all of the prime numbers. This one
 Once it generates all of the primes up to 2 million, we can just scan through the array and sum the indexes of all the prime numbers. Note that the sum starts at 2 and ignores even numbers since 2 is the only even prime.
 ```C++
 const int limit = 2000000;
-bool sieve[limit] = {true};
-for (int i = 4; i < limit; i += 2) {
-  sieve[i] = false;
+bool sieve[limit] = {};
+for (int i = 3; i < limit; i += 2) {
+  sieve[i] = true;
 }
-sieve[0] = sieve[1] = false;
-for (int i = 3; i * i < limit; i++) {
+sieve[2] = true;
+for (int i = 3; i * i < limit; i += 2) {
   if (sieve[i]) {
     for (int j = i * i; j < limit; j += i) {
       sieve[j] = false;
@@ -229,9 +229,65 @@ for (int i = 3; i < limit; i += 2) {
 std::cout << sum << std::endl;
 ```
 ---
+## Problem 11
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 12
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 13
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
 ## Problem 14
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 15
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 16
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 17
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 18
+
+**Pierre Sejourne** - C++
 
 ```C++
 
@@ -239,7 +295,15 @@ std::cout << sum << std::endl;
 ---
 ## Problem 19
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 20
+
+**Pierre Sejourne** - C++
 
 ```C++
 
@@ -247,7 +311,15 @@ std::cout << sum << std::endl;
 ---
 ## Problem 21
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 22
+
+**Pierre Sejourne** - C++
 
 ```C++
 
@@ -255,7 +327,7 @@ std::cout << sum << std::endl;
 ---
 ## Problem 23
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++
 
 ```C++
 
@@ -263,7 +335,55 @@ std::cout << sum << std::endl;
 ---
 ## Problem 24
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 25
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 26
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 27
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 28
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 29
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 30
+
+**Pierre Sejourne** - C++
 
 ```C++
 
@@ -271,7 +391,23 @@ std::cout << sum << std::endl;
 ---
 ## Problem 31
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 32
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 33
+
+**Pierre Sejourne** - C++
 
 ```C++
 
@@ -279,9 +415,536 @@ std::cout << sum << std::endl;
 ---
 ## Problem 34
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++
 
 ```C++
 
 ```
 ---
+## Problem 35
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 36
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 37
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 38
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 39
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 40
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 41
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 42
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 43
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 44
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 45
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 46
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 47
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 48
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 49
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 50
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 51
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 52
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 53
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 54
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 55
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 56
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 57
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 58
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 59
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 60
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 61
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 62
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 63
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 64
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 65
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 66
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 67
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 68
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 69
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 70
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 71
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 72
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 73
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 74
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 75
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 76
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 77
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 78
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 79
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 80
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 81
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 82
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 83
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 84
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 85
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 86
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 87
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 88
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 89
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 90
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 91
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 92
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 93
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 94
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 95
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 96
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 97
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 98
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 99
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```
+---
+## Problem 100
+
+**Pierre Sejourne** - C++
+
+```C++
+
+```

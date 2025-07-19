@@ -232,9 +232,47 @@ std::cout << sum << std::endl;
 ## Problem 11
 
 **Pierre Sejourne** - C++  
-
+The concepts of 'Right' and 'Left', 'Up' and 'Down' are equivalent in this problem. So, we can just preform 4 iterations over each cell to check for a valid 4-element segment in each of the 4 directions. If it’s within the grid bounds, we compute the product. If the product is larger than the previous maximum, we update the maximum. This takes 1600 iterations, of which ~1000 are valid. So, 3000 two-digit multiplications are done, which is viable for computers to do within a reasonable time.
 ```C++
-
+std::vector<std::vector<int>> grid = {
+  {8,2,22,97,38,15,0,40,0,75,4,5,7,78,52,12,50,77,91,8},
+  {49,49,99,40,17,81,18,57,60,87,17,40,98,43,69,48,4,56,62,0},
+  /*...[The entire 20x20 grid in this form]*/
+};
+long long maxProduct = 0;
+for (int i = 0; i < 20; ++i) {
+  for (int j = 0; j < 20; ++j) {
+    if (j <= 16) {
+      long long prod = 1;
+      for (int k = 0; k < 4; k++) {
+        prod *= grid[i][j + k];
+      }
+      maxProduct = std::max(maxProduct, prod);
+    }
+    if (i <= 16) {
+      long long prod = 1;
+      for (int k = 0; k < 4; k++) {
+        prod *= grid[i + k][j];
+      }
+      maxProduct = std::max(maxProduct, prod);
+    }
+    if (i <= 16 && j <= 16) {
+        long long prod = 1;
+        for (int k = 0; k < 4; k++) {
+          prod *= grid[i + k][j + k];
+        }
+      maxProduct = std::max(maxProduct, prod);
+    }
+    if (i <= 16 && j >= 3) {
+      long long prod = 1;
+      for (int k = 0; k < 4; k++) {
+        prod *= grid[i + k][j - k];
+      }
+      maxProduct = std::max(maxProduct, prod);
+    }
+  }
+}
+std::cout <<  maxProduct << std::endl;
 ```
 ---
 ## Problem 12

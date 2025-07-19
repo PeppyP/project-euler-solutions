@@ -155,7 +155,7 @@ So, to find the highest product we can just ignore any sequences that have a las
 ```C++
 long long productOfDigits(const string& digits, int start) {
     long long product = 1;
-    for (int i = start; i < start + 13; ++i) {
+    for (int i = start; i < start + 13; i++) {
         if (digits[i] == '0') {
           return 0;
         }

@@ -1,6 +1,6 @@
 ## Problem 1 
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 The sum of all natural numbers up to x is given by $\frac{x * (x + 1)}{2}\$. This is clearly faster than looping each integer between 1 and 1000.  
 However, we're looking for the sum of a subset of those numbers, specifically every 3rd and 5th. This can be done by substituting $x$ for $\frac{x}{n}\$, then multiplying the result by $n$, where $n$ is the factor of the subset we want.  
 For mathematical justification of this, call the triangular sum $f(x)$. Dividing the input reduces the range of $f(x)$, then scaling the function effectively converts the range from sequential integers to multiples of $n$. So, for $f(9)$, the function effectively sums the set {1, 2, 3, 4, 5, 6, 7, 8, 9}, for $f(\frac{9}{3}\)$, the function sums {1, 2, 3}. Multiplying $1 + 2 +3$ by 3 gives you {3, 6, 9}, the set that we want.   
@@ -20,7 +20,7 @@ print(str(sum(x for x in range(1, 1000, 1) if (x%3 == 0 or x%5 == 0))))
 ---
 ## Problem 2
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 This problem requires us to consider every even Fibonacci number, so we will need to calculate every one, the most efficient way to do this is to simply iterate through every value by repeatedly adding variables to each other and adding to a sum when the head variable is even.  
 There isn't much to say, its just a simple problem with an uncomplicated solution.  
 ```C++
@@ -42,7 +42,7 @@ std::cout << sum << std::endl;
 ---
 ## Problem 3
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 To find the largest prime factor of a composite number x, we can divide x repeatedly, starting with a prime number, until you end up with another prime or exhaust all other options. The last value after the divisions end is the largest prime factor. This is because at every step, all smaller prime divisors are divided out.  
 Since 2 is the only even prime number, we divide x by 2 repeatedly until it is no longer divisible, or until it becomes 2 itself. This removes all even factors.  
 Once all factors of 2 are removed, any remaining factors must be odd. We loop through odd numbers only starting from 3, incrementing by 2, which skips all even composites.  
@@ -63,7 +63,7 @@ std::cout << n << std::endl;
 ---
 ## Problem 4
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 The questions asks for two three-digit numbers that form a palindrome. This means that we have to look through each combination of 100-999, determine whether it's a palindrome, then store the highest palindrome that we find.  
 The second loop starts from the first factor since lower numbers would have already been tested, and ends when a palindrome is found. This is because we check the palindromes from descending factors as we're searching for the maximum, so any further tests will only yield lower numbers.
 ```C++
@@ -103,7 +103,7 @@ Multiplying them together gives the answer, $1\cdot2^4\cdot3^2\cdot5\cdot7\cdot1
 ---
 ## Problem 6
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 The sum of all natural numbers to x is given by $\frac{x * (x + 1)}{2}\$, squaring this gives us the square of the sum of all natural numbers up to x, $\frac{x^2 * (x + 1)^2}{4}\$.  
 The sum of the squares of all natural numbers up to x is given by $\frac{x * (x + 1) * (2x + 1)}{6}\$.  
 The difference between these sums is $\frac{x^2 * (x + 1)^2}{4}\ - \frac{x * (x + 1) * (2x + 1)}{6}\ = \frac{3x^4 + 6x^3 + 3x^2}{12}\ - \frac{4x^3 + 6x^2 + 2x}{12}\ = \frac{3x^4 + 2x^3 - 3x^2 - 2x}{12}\$.  
@@ -116,7 +116,7 @@ std::cout << ( 3*n*n*n*n + 2*n*n*n - 3*n*n - 2*n )/12 << std::endl;
 ---
 ## Problem 7
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 There are many ways to find prime numbers, and I contemplated "use OEIS" here as a joke. Sadly, I doubt my humor would be appreciated.  
 Anyway, I decided to implement a sieve of Eratosthenes since I was the first thing I thought of. This algorithm "finds" primes by sequentially disqualifying all non-prime numbers.  
 Each number is represented by a boolean in an array that shows whether that number is prime. The array is initalised as all true, except for 0 and 1, and every even number greater than 2.  
@@ -149,7 +149,7 @@ for (int i = 3; i < limit; i += 2) {
 ---
 ## Problem 8
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 One thing to note is that as we move the 'head', the 13 digits that we are multiplying, along the string, the product is effectively divided by the previous digit and scaled by the next digit.  
 So, to find the highest product we can just ignore any sequences that have a last digit that is lower than or equal to the next digit. Otherwise, we can multiply the digits and keep the highest of those multiples. This will take 1000 - 13 multiplications minus how many are removed from consideration by the greedy process.
 ```C++
@@ -184,7 +184,7 @@ std::cout << maxProduct << std::endl;
 ---
 ## Problem 9
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 The values for a, b, c need to fulfill the following criteria: $a^2 + b^2 = c^2$ and $a + b + c = 1000$. We can use this to weed out $a < 333$ and $b < 500$.
 This leaves us with 111555 calculations (Sum of first 333 terms of $u<sub>1</sub> = 166, d = 1$), which is fast enough to compute within a reasonable amount of time, 1.37 seconds for me.  
 There are of course better methods for finding Pythagorian triples, such as the sets of solutions given by Euclid's formula.  
@@ -203,7 +203,7 @@ for (a = 1; a < 333; a++) {
 ---
 ## Problem 10
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - C++    
 Another problem that involves running through all of the prime numbers. This one will be done with the same algorithm as **Problem 7**, the Sieve of Eratosthenes.  
 Once it generates all of the primes up to 2 million, we can just scan through the array and sum the indexes of all the prime numbers. Note that the sum starts at 2 and ignores even numbers since 2 is the only even prime.
 ```C++
@@ -231,7 +231,7 @@ std::cout << sum << std::endl;
 ---
 ## Problem 11
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -239,7 +239,7 @@ std::cout << sum << std::endl;
 ---
 ## Problem 12
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -247,7 +247,7 @@ std::cout << sum << std::endl;
 ---
 ## Problem 13
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -255,7 +255,7 @@ std::cout << sum << std::endl;
 ---
 ## Problem 14
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 The [Collatz conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) is a well-studied mathematics theorem that asks if a recursive sequence terminates for any starting value. So far, all starting values have been found to terminate after some number of terms.
 We can compute the number of terms in a given Collatz sequence fairly easily, though repeatedly calculating the entire chain for long starting values takes time. To improve performance, the program stores the sequence lengths of previously computed values in a vector. This reduces the number of repeated calculations dramatically, particularly for values that appear in multiple sequences. 
 A recursive function computes and memoizes sequence lengths for numbers under one million. For values larger than that it computes them on the fly but does not store them. Then we can check each starting value and record the one that generates the longest sequence.
@@ -293,7 +293,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 15
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -301,7 +301,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 16
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -309,7 +309,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 17
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -317,7 +317,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 18
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -325,7 +325,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 19
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -333,7 +333,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 20
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -341,7 +341,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 21
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -349,7 +349,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 22
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -357,7 +357,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 23
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -365,7 +365,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 24
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -373,7 +373,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 25
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -381,7 +381,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 26
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -389,7 +389,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 27
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -397,7 +397,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 28
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -405,7 +405,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 29
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -413,7 +413,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 30
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -421,7 +421,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 31
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -429,7 +429,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 32
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -437,7 +437,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 33
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -445,7 +445,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 34
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -453,7 +453,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 35
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -461,7 +461,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 36
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -469,7 +469,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 37
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -477,7 +477,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 38
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -485,7 +485,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 39
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -493,7 +493,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 40
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -501,7 +501,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 41
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -509,7 +509,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 42
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -517,7 +517,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 43
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -525,7 +525,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 44
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -533,7 +533,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 45
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -541,7 +541,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 46
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -549,7 +549,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 47
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -557,7 +557,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 48
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -565,7 +565,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 49
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -573,7 +573,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 50
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -581,7 +581,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 51
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -589,7 +589,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 52
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -597,7 +597,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 53
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -605,7 +605,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 54
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -613,7 +613,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 55
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -621,7 +621,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 56
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -629,7 +629,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 57
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -637,7 +637,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 58
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -645,7 +645,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 59
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -653,7 +653,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 60
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -661,7 +661,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 61
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -669,7 +669,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 62
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -677,7 +677,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 63
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -685,7 +685,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 64
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -693,7 +693,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 65
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -701,7 +701,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 66
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -709,7 +709,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 67
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -717,7 +717,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 68
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -725,7 +725,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 69
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -733,7 +733,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 70
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -741,7 +741,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 71
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -749,7 +749,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 72
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -757,7 +757,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 73
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -765,7 +765,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 74
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -773,7 +773,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 75
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -781,7 +781,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 76
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -789,7 +789,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 77
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -797,7 +797,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 78
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -805,7 +805,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 79
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -813,7 +813,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 80
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -821,7 +821,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 81
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -829,7 +829,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 82
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -837,7 +837,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 83
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -845,7 +845,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 84
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -853,7 +853,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 85
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -861,7 +861,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 86
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -869,7 +869,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 87
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -877,7 +877,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 88
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -885,7 +885,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 89
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -893,7 +893,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 90
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -901,7 +901,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 91
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -909,7 +909,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 92
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -917,7 +917,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 93
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -925,7 +925,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 94
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -933,7 +933,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 95
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -941,7 +941,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 96
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -949,7 +949,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 97
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -957,7 +957,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 98
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -965,7 +965,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 99
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 
@@ -973,7 +973,7 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 100
 
-**Pierre Sejourne** - C++
+**Pierre Sejourne** - C++  
 
 ```C++
 

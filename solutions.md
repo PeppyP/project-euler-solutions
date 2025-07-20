@@ -344,9 +344,20 @@ return 0;
 ## Problem 13
 
 **Pierre Sejourne** - C++  
-
+To determine the first 10 digits of a sum, we don’t need the full precision of the sum, only enough to ensure that rounding the discarded digits doesn't affect the top 10.  
+A sum of 100 50-digit numbers could have up to 52 digits (in the 'worst' case). So the first 10 digits can only be affected by the first 13 digits of each number. Therefore, we can safely truncate each number to its first 13 digits, sum them as long long, and extract the first 10 digits of the result.
 ```C++
-
+std::string numbers_raw = "37107287533902102798797998220837590246510135740250\n...[The string of all the numbers separated by a newline]";
+std::stringstream ss(numbers_raw);
+std::string line;
+long double total = 0;
+while (getline(ss, line)) {
+  std::string prefix = line.substr(0, 13);
+  total += stold(prefix); 
+}
+std::string result = std::to_string((long long)total);
+std::cout << result.substr(0, 10) << std::endl;
+return 0;
 ```
 ---
 ## Problem 14
@@ -389,11 +400,12 @@ std::cout << maxStart << std::endl;
 ---
 ## Problem 15
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - Maths & Logic  
+This is a classic combinatorics problem. Each path consists of exactly 20 right moves and 20 down moves, in some order.  
+Therefore, every valid path is simply a permutation of these 40 moves where the order of moves matters, but the type of move is limited to 2 kinds.  
+So, the number of such sequences is given by the binomial coefficient: $\binom{40}{20} = \frac{40!}{20!\cdot 20!} = \frac{40\cdot 39\cdot 38 \cdot 37\cdot ...\cdot 21}{20!}$.  
+This gives us the answer.
 
-```C++
-
-```
 ---
 ## Problem 16
 

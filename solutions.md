@@ -440,9 +440,40 @@ std::cout << sum << std::endl;
 ## Problem 17
 
 **Pierre Sejourne** - C++  
-
+This is doable on a per-case basis, but to do this efficiently, we can exploit the structure of the English number system's few base components:  
+"one" to "nine", "eleven" to "nineteen", "twenty", "thirty", ..., "ninety", "hundred", "and", and "thousand" (and).  
+By decomposing each number into its components, and precomputing the letter counts for each component, we can reuse these values and efficiently build the total.
 ```C++
+const int ones[] = { 0, 3, 3, 5, 4, 4, 3, 5, 5, 4, 3, 6, 6, 8, 8, 7, 7, 9, 8, 8 };
+const int tens[] = { 0, 0, 6, 6, 5, 5, 5, 7, 6, 6 };
 
+int numberLetterCount(int n) {
+  if (n == 1000) {
+    return 11;
+  }
+  int total = 0;
+  int hundreds = n / 100;
+  int remainder = n % 100;
+  if (hundreds) {
+    total += ones[hundreds] + 7; 
+    if (remainder) {
+      total += 3; 
+    }
+  }
+  if (remainder >= 20) {
+    total += tens[remainder / 10];
+    total += ones[remainder % 10];
+  } else if (remainder >= 1) {
+    total += ones[remainder];
+  }
+  return total;
+}
+
+int sum = 0;
+for (int i = 1; i <= 1000; ++i) {
+  sum += numberLetterCount(i);
+}
+std::cout <<  sum << std::endl;
 ```
 ---
 ## Problem 18

@@ -1,7 +1,7 @@
 ## Problem 1 
 
 **Pierre Sejourne** - C++    
-The sum of all natural numbers up to x is given by $\frac{x * (x + 1)}{2}\$. This is clearly faster than looping each integer between 1 and 1000.  
+The sum of all natural numbers up to x is given by $\frac{x * (x + 1)}{2}\$. This is faster than looping through each integer between 1 and 1000.  
 However, we're looking for the sum of a subset of those numbers, specifically every 3rd and 5th. This can be done by substituting $x$ for $\frac{x}{n}\$, then multiplying the result by $n$, where $n$ is the factor of the subset we want.  
 For mathematical justification of this, call the triangular sum $f(x)$. Dividing the input reduces the range of $f(x)$, then scaling the function effectively converts the range from sequential integers to multiples of $n$. So, for $f(9)$, the function effectively sums the set {1, 2, 3, 4, 5, 6, 7, 8, 9}, for $f(\frac{9}{3}\)$, the function sums {1, 2, 3}. Multiplying $1 + 2 +3$ by 3 gives you {3, 6, 9}, the set that we want.   
 However, if we just sum every 3rd number and every 5th number, multiples of 15 will be counted twice, since $15 = 3 * 5$. Solving this is as easy as considering every 15th number and subtracting that from the total.  
@@ -440,8 +440,7 @@ std::cout << sum << std::endl;
 ## Problem 17
 
 **Pierre Sejourne** - C++  
-This is doable on a per-case basis, but to do this efficiently, we can exploit the structure of the English number system's few base components:  
-"one" to "nine", "eleven" to "nineteen", "twenty", "thirty", ..., "ninety", "hundred", "and", and "thousand" (and).  
+This is doable on a per-case basis, but to do this efficiently, we can exploit the structure of the English number system's few base components: "one" to "nine", "eleven" to "nineteen", "twenty", "thirty", ..., "ninety", "hundred", "and", and "thousand".  
 By decomposing each number into its components, and precomputing the letter counts for each component, we can reuse these values and efficiently build the total.
 ```C++
 const int ones[] = { 0, 3, 3, 5, 4, 4, 3, 5, 5, 4, 3, 6, 6, 8, 8, 7, 7, 9, 8, 8 };
@@ -516,9 +515,35 @@ std::cout << maxTotal << std::endl;
 ## Problem 19
 
 **Pierre Sejourne** - C++  
-
+The first problem directly involving modular arithmetic, if CodeForces [$^{[1]}$](#[1]) has taught me anything, then it'll keep appearing ad nauseam. The days of the week repeat every 7 days, so we can track the day of the week using modulo 7 arithmetic. We define: 0 = Sunday, 1 = Monday, ..., 6 = Saturday. Each month advances the weekday by (number of days in the month) % 7. This gives a modular recurrence. If the 1st of a month is Tuesday, and the month has 31 days, the next 1st will fall on (2 + 31) mod 7 = 5. We simulate this process over the given period, checking if a month begins on a Sunday, and count each case.   
+To determine month lengths, we can just copy the giving rules and check for year divisibility for February.  
 ```C++
+bool isLeapYear(int year) {
+  if (year % 4 != 0) {
+    return false;
+  }
+  if (year % 100 == 0 && year % 400 != 0) {
+    return false;
+  }
+  return true;
+}
 
+int monthDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+int dayOfWeek = 1; 
+int count = 0;
+for (int year = 1900; year <= 2000; year++) {
+  for (int month = 0; month < 12; month++) {
+    if (year >= 1901 && dayOfWeek == 0) {
+      count++;
+    }
+    int daysThisMonth = monthDays[month];
+    if (month == 1 && isLeapYear(year)) {
+      daysThisMonth++;
+    }
+    dayOfWeek = (dayOfWeek + daysThisMonth) % 7;
+  }
+}
+std::cout << count << std::endl;
 ```
 ---
 ## Problem 20
@@ -899,20 +924,9 @@ std::cout << maxTotal << std::endl;
 ---
 ## Problem 67
 
-**Pierre Sejourne** - C++  
-Exactly the same program as **Problem 18**, but this time reading the string from a file instead of a literal because it's too long to type.  
-```C++
-//Add
-std::ifstream readFile("[Triangle string path]");
-std::string triangleData;
-std::string tempLine;
-//Modify 'std::string triangleData = "75 95 64 17 47 82...[Each number in the triangle separated by a space]";' to
-while (std::getline(readFile, tempLine)) {
-  triangleData << tempLine << std::endl;
-}
-//Add
-readFile.close();
-```
+**Pierre Sejourne** - Already Solved  
+Exactly the same program and as **Problem 18**, but this time reading the string from a file instead of a literal because it's too long to type.  
+
 ---
 ## Problem 68
 
@@ -1177,3 +1191,6 @@ readFile.close();
 ```C++
 
 ```
+---
+\
+<a href="#[1]"></a>$^{[1]}$ Thank you to the glorious **MikeMirzayanov** for Polygon and this wonderful platform!

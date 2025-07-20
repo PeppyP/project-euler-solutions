@@ -283,14 +283,14 @@ Then the total number of divisors is given by $(a_1 + 1)(a_2 + 1)...(a_k + 1)$.
 To keep things fast, we precompute primes using a sieve and apply this formula to each triangle number. Since each triangle number is a product of $n$ and $n + 1$ (divided by 2), we take advantage of the fact that n and $n + 1$ are coprime, which means we can factor them separately and multiply the result.
 ```C++
 std::vector<int> generatePrimes(int max) {
-  std::vector<bool> isPrime(max + 1, true);
+  std::vector<bool> sieve(max + 1, true);
   std::vector<int> primes;
-  isPrime[0] = isPrime[1] = false;
+  sieve[0] = sieve[1] = false;
   for (int i = 2; i <= max; ++i) {
-    if (isPrime[i]) {
+    if (sieve[i]) {
       primes.push_back(i);
       for (int j = i * i; j <= max; j += i) {
-        isPrime[j] = false;
+        sieve[j] = false;
       }
     }
   }
@@ -748,25 +748,113 @@ We can solve this inequality for the smallest n where the number of digits is  1
 ## Problem 26
 
 **Pierre Sejourne** - C++  
-
+We know that rational numbers either terminate or repeat in decimal. For a fraction $\frac{1}{d}$, if it doesn't terminate, it will eventually enter a cycle due to the Pigeonhole Principle: the remainders will eventually repeat.  
+To find the length of that cycle, we simulate long division while tracking remainders. Each time we divide, we store the remainder we got and the position it occurred.   
+If a remainder repeats, we know the digits between the two positions repeat forever. The distance between those two positions gives us the cycle length.
+This is modular arithmetic. The decimal expansion of $\frac{1}{d}$ repeats with a period equal to the smallest k such that: $10^k≡1$ mod $d$, but only if d and 10 are coprime.
 ```C++
+int recurringCycleLength(int d) {
+  std::unordered_map<int, int> remainderPositions;
+  int numerator = 1;
+  int position = 0;
+  while (numerator != 0) {
+    if (remainderPositions.find(numerator) != remainderPositions.end()) {
+      return position - remainderPositions[numerator];
+    }
+    remainderPositions[numerator] = position;
+    numerator = (numerator * 10)%d;
+    position++;
+  }
+  return 0;
+}
 
+int maxD = 0;
+int maxLength = 0;
+for (int d = 999; d > 1; d--) {
+  if (d % 2 == 0 || d % 5 == 0) {
+    continue;
+  }
+  int length = recurringCycleLength(d);
+  if (length > maxLength) {
+    maxLength = length;
+    maxD = d;
+  }
+}
+std::cout << maxLength << std::endl;
 ```
 ---
 ## Problem 27
 
 **Pierre Sejourne** - C++  
-
+At n=0, the quadratic becomes f(0)=b, so b must be prime.  
+At n=1, f(1)=1+a+b must also be prime.  
+With these starting points, we can precompute a list of prime numbers (via the Sieve of Eratosthenes) up to a reasonable upper bound, and check the prime results of any given quadratic function for a and b.
 ```C++
+std::vector<bool> generatePrimeSieve(int max) {
+  std::vector<bool> sieve(max + 1, true);
+  sieve[0] = sieve[1] = false;
+  for (int i = 2; i * i <= max; i++) {
+    if (sieve[i]) {
+      for (int j = i * i; j <= max; j += i) {
+        sieve[j] = false;
+      }
+    }
+  }
+  return sieve;
+}
 
+int countConsecutivePrimes(int a, int b, const std::vector<bool>& sieve) {
+  int n = 0;
+  while (true) {
+    int val = n * n + a * n + b;
+    if (val < 0 || val >= static_cast<int>(sieve.size()) || !sieve[val]) {
+      break;
+    }
+    n++;
+  }
+  return n;
+}
+
+std::vector<bool> sieve = generatePrimeSieve(1000000);
+int maxLength = 0;
+int bestA = 0, bestB = 0;
+for (int b = -1000; b <= 1000; ++b) {
+  if (b < 0 || !sieve[std::abs(b)]) {
+    continue;
+  }
+  for (int a = -1000; a <= 1000; ++a) {
+    int length = countConsecutivePrimes(a, b, sieve);
+    if (length > maxLength) {
+      maxLength = length;
+      bestA = a;
+      bestB = b;
+    }
+  }
+}
+std::cout <<  bestA * bestB << std::endl;
 ```
 ---
 ## Problem 28
 
 **Pierre Sejourne** - C++  
+Each layer (or "ring") added to the spiral increases the side length by 2 and wraps around the previous layer.  
+Let’s define s as the side length of the current layer. Then:  
+- The top-right corner is $s^2$
+- The other three corners decrease by $s−1$ successively:   
+    - $s^2-(s-1)$
+    - $s^2-2(s-1)$
+    - $s^2-3(s-1)$
 
+Therefore, the sum of the corners for a given odd $s≥3$ is:  $4s^2-6(s-1)$  
+We start at the center value (1), and add the sums of each layer as s goes from 3 to 1001 (odd numbers only).
 ```C++
-
+const int size = 1001;
+long long sum = 1; 
+for (int s = 3; s <= size; s += 2) {
+  long long corner_sum = 4LL * s * s - 6LL * (s - 1);
+  sum += corner_sum;
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 29

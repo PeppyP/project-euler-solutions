@@ -619,34 +619,131 @@ std::cout << sum << std::endl;
 ## Problem 22
 
 **Pierre Sejourne** - C++  
-
+A very simple problem that just takes string manipulation and a sorting algorithm, lexographic sort.  
 ```C++
+int nameValue(const std::string& name) {
+  int value = 0;
+  for (char ch : name) {
+    value += (ch - 'A' + 1);
+  }
+  return value;
+}
 
+std::ifstream file("[File path]");
+std::string line;
+std::getline(file, line);
+file.close();
+std::vector<std::string> names;
+std::string current;
+for (char ch : line) {
+  if (ch == '"') continue;
+  if (ch == ',') {
+      names.push_back(current);
+      current.clear();
+  } else {
+      current += ch;
+  }
+}
+if (!current.empty()) {
+  names.push_back(current);
+}
+std::sort(names.begin(), names.end());
+long long totalScore = 0;
+for (size_t i = 0; i < names.size(); ++i) {
+  int value = nameValue(names[i]);
+  totalScore += static_cast<long long>(value) * (i + 1);
+}
+std::cout << totalScore << std::endl;
 ```
 ---
 ## Problem 23
 
 **Pierre Sejourne** - C++  
-
+The key insight is that abundant numbers are those where the sum of their proper divisors exceeds the number itself. If we generate all abundant numbers below a limit (28123), we can then ask: which numbers cannot be written as the sum of two of them?  
+By applying the divisor sum function, $σ(n)$, we can determine abundance. Then, a boolean array is used to mark every number that can be written as the sum of two abundant numbers and summing what remains.  
 ```C++
+int sumOfProperDivisors(int n) {
+  int sum = 1;
+  int sqrtN = static_cast<int>(sqrt(n));
+  for (int i = 2; i <= sqrtN; i++) {
+    if (n % i == 0) {
+      sum += i;
+      int other = n / i;
+      if (other != i) {
+        sum += other;
+      }
+    }
+  }
+  return sum;
+}
 
+const int LIMIT = 28123;
+std::vector<int> abundantNumbers;
+for (int i = 12; i <= 28123; i++) {
+    if (sumOfProperDivisors(i) > i) {
+        abundantNumbers.push_back(i);
+    }
+}
+std::vector<bool> canBeWrittenAsAbundantSum(28123 + 1, false);
+for (size_t i = 0; i < abundantNumbers.size(); i++) {
+    for (size_t j = i; j < abundantNumbers.size(); j++) {
+        int sum = abundantNumbers[i] + abundantNumbers[j];
+        if (sum <= 28123) {
+            canBeWrittenAsAbundantSum[sum] = true;
+        } else {
+            break;
+        }
+    }
+}
+int totalSum = 0;
+for (int i = 1; i <= 28123; i++) {
+    if (!canBeWrittenAsAbundantSum[i]) {
+        totalSum += i;
+    }
+}
+std::cout << totalSum << std::endl;
 ```
 ---
 ## Problem 24
 
 **Pierre Sejourne** - C++  
-
+There are $10!=3,628,800$ possible permutations in total. Which is doable, but, instead of generating all of them, we'll ues a more efficient method: computing the desired permutation directly by figuring out which digit belongs in each position.  
+This method is rooted in the observation that:  
+If you fix the first digit, there are 9! permutations of the remaining 9 digits.  
+If you fix the second digit, there are 8! of the remaining, and so on.  
+To find the millionth permutation, we subtract factorial blocks from our target until we determine which digit belongs in each position. This is akin to converting the number into a factorial number system, where positions are how many permutations the remaining digits have.
 ```C++
+std::vector<int> computeFactorials(int n) {
+  std::vector<int> fact(n + 1, 1);
+  for (int i = 1; i <= n; i++) {
+    fact[i] = fact[i - 1] * i;
+  }
+  return fact;
+}
 
+int target = 999999;
+std::vector<int> digits = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+std::vector<int> factorial = computeFactorials(10);
+std::string result = "";
+for (int i = 9; i >= 0; --i) {
+  int index = target / factorial[i];
+  target %= factorial[i];
+  result += to_string(digits[index]);
+  digits.erase(digits.begin() + index);
+}
+std::cout << result << std::endl;
 ```
 ---
 ## Problem 25
 
-**Pierre Sejourne** - C++  
+**Pierre Sejourne** - Maths & Logic  
+The number of digits in a number n is given by: $digits(n)=⌊\log_{10}{n}⌋+1$.  
+So instead of computing the Fibonacci number, we can compute its logarithm base 10 and track when the number of digits reaches 1000.  
+Moreover, the Fibonacci sequence grows exponentially to the golden ratio, and we can estimate the n-th Fibonacci number using [Binet’s Formula](https://en.wikipedia.org/wiki/Fibonacci_sequence#Binet's_formula): $F_n=\frac{ϕ^n}{\sqrt{5}}$.  
+Where $ϕ=\frac{1+\sqrt{5}}{2}≈1.618$. Taking the logarithm of both sides: $\log_{10}{F_n}≈n\cdot \log_{10}{ϕ}-\log_{10}{\sqrt{5}}$.  
+So the number of digits in is approximately: $⌊n\cdot \log_{10}{ϕ}-\log_{10}{\sqrt{5}}⌋+1$.  
+We can solve this inequality for the smallest n where the number of digits is  1000, which gives us the answer.  
 
-```C++
-
-```
 ---
 ## Problem 26
 

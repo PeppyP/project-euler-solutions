@@ -410,7 +410,7 @@ This gives us the answer.
 ## Problem 16
 
 **Pierre Sejourne** - C++  
-$2^{100}$ us a 31-digit integer, far too large for native C++ types. But it’s also tame in structure as it's just a power of 2. So, we can use digit-wise arithmetic to simulate it instead.  
+$2^{100}$ is a 31-digit integer, too large for native C++ types. But it’s also tame in structure as it's just a power of 2. So, we can use digit-wise arithmetic to simulate it instead.  
 We represent the number as a vector<int> where each element is a digit. We start with 1, and multiply the number by 2, one digit at a time, 100 times. Then sum the elements of the vector.
 ```C++
 void multiplyBy2(std::vector<int>& digits) {
@@ -479,9 +479,38 @@ std::cout <<  sum << std::endl;
 ## Problem 18
 
 **Pierre Sejourne** - C++  
-
+This is a fairly standard dynamic programming problem, the thing to note is that the limited number of options allows you to simplify the calculation of later steps by substituting values that have already been found during computation. This allows us to just go through every possiblity from the bottom up, since the maximum from any starting position will either already be calculated or be the highest from among two values. So the calculations are just n comparisions, which is very easy for computers to do.  
+The is no reason to do this for the small triangle in this problem, but **Problem 67** is a scaled version of this problem that requires a more efficient program.  
+The rest of the program relates to flattening the triangle into a computer-readable format.
 ```C++
+std::vector<std::vector<int>> parseTriangle(const std::string& data) {
+  std::vector<std::vector<int>> triangle;
+  std::istringstream iss(data);
+  int value, row = 1;
+  while (!iss.eof()) {
+    std::vector<int> currentRow;
+    for (int i = 0; i < row && iss >> value; i++) {
+        currentRow.push_back(value);
+    }
+    triangle.push_back(currentRow);
+    row++;
+  }
+  return triangle;
+}
 
+int maximumPathSum(std::vector<std::vector<int>>& triangle) {
+  for (int row = triangle.size() - 2; row >= 0; row--) {
+    for (size_t col = 0; col < triangle[row].size(); col++) {
+      triangle[row][col] += std::max(triangle[row + 1][col], triangle[row + 1][col + 1]);
+    }
+  }
+  return triangle[0][0];
+}
+
+std::string triangleData = "75 95 64 17 47 82...[Each number in the triangle separated by a space]";
+std::vector<std::vector<int>> triangle = parseTriangle(triangleData);
+int maxTotal = maximumPathSum(triangle);
+std::cout << maxTotal << std::endl;
 ```
 ---
 ## Problem 19
@@ -871,9 +900,18 @@ std::cout <<  sum << std::endl;
 ## Problem 67
 
 **Pierre Sejourne** - C++  
-
+Exactly the same program as **Problem 18**, but this time reading the string from a file instead of a literal because it's too long to type.  
 ```C++
-
+//Add
+std::ifstream readFile("[Triangle string path]");
+std::string triangleData;
+std::string tempLine;
+//Modify 'std::string triangleData = "75 95 64 17 47 82...[Each number in the triangle separated by a space]";' to
+while (std::getline(readFile, tempLine)) {
+  triangleData << tempLine << std::endl;
+}
+//Add
+readFile.close();
 ```
 ---
 ## Problem 68

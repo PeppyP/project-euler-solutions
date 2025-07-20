@@ -515,7 +515,7 @@ std::cout << maxTotal << std::endl;
 ## Problem 19
 
 **Pierre Sejourne** - C++  
-The first problem directly involving modular arithmetic, if CodeForces [$^{[1]}$](#[1]) has taught me anything, then it'll keep appearing ad nauseam. The days of the week repeat every 7 days, so we can track the day of the week using modulo 7 arithmetic. We define: 0 = Sunday, 1 = Monday, ..., 6 = Saturday. Each month advances the weekday by (number of days in the month) % 7. This gives a modular recurrence. If the 1st of a month is Tuesday, and the month has 31 days, the next 1st will fall on (2 + 31) mod 7 = 5. We simulate this process over the given period, checking if a month begins on a Sunday, and count each case.   
+The first problem directly involving modular arithmetic, if CodeForces[<sup>[1]</sup>](#1) has taught me anything, then it'll keep appearing ad nauseam. The days of the week repeat every 7 days, so we can track the day of the week using modulo 7 arithmetic. We define: 0 = Sunday, 1 = Monday, ..., 6 = Saturday. Each month advances the weekday by (number of days in the month) % 7. This gives a modular recurrence. If the 1st of a month is Tuesday, and the month has 31 days, the next 1st will fall on (2 + 31) mod 7 = 5. We simulate this process over the given period, checking if a month begins on a Sunday, and count each case.   
 To determine month lengths, we can just copy the giving rules and check for year divisibility for February.  
 ```C++
 bool isLeapYear(int year) {
@@ -1192,5 +1192,4 @@ Exactly the same program and as **Problem 18**, but this time reading the string
 
 ```
 ---
-\
-<a href="#[1]"></a>$^{[1]}$ Thank you to the glorious **MikeMirzayanov** for Polygon and this wonderful platform!
+<a id="1"></a>$^{[1]}$ Thank you to the glorious **MikeMirzayanov** for Polygon and this wonderful platform!

@@ -581,9 +581,39 @@ std::cout << sum << std::endl;
 ## Problem 21
 
 **Pierre Sejourne** - C++  
-
+This problem is steeped in classical number theory. To start with, we can compute $𝑑(𝑛)$
+for each number up to 10,000 using divisor theory: the sum of divisors function is multiplicative and can be made using prime factorizations, but here we use a more practical approach that directly computes proper divisors by iterating up to $\sqrt{n}$.
 ```C++
+int sumOfProperDivisors(int n) {
+  if (n < 2) {
+    return 0;
+  }
+  int sum = 1;
+  int sqrtN = static_cast<int>(sqrt(n));
+  for (int i = 2; i <= sqrtN; ++i) {
+    if (n % i == 0) {
+      sum += i;
+      int paired = n / i;
+      if (paired != i) {
+        sum += paired;
+      }
+    }
+  }
+  return sum;
+}
 
+std::vector<int> divisorSums(10000, 0);
+for (int i = 1; i < 10000; i++) {
+    divisorSums[i] = sumOfProperDivisors(i);
+}
+int sum = 0;
+for (int a = 2; a < 10000; a++) {
+  int b = divisorSums[a];
+  if (b < 10000 && b != a && divisorSums[b] == a) {
+    sum += a;
+  }
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 22

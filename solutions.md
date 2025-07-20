@@ -550,9 +550,32 @@ std::cout << count << std::endl;
 ## Problem 20
 
 **Pierre Sejourne** - C++  
-
+Factorials grow very fast, too fast to be easily stored in native c++ types.  
+So, we instead store $100!$ in a vector\<int\> as each digit of the result. Each multiplication step behaves like a convolution of a number with a digit array, and carries are propagated just like in arithmetic.  
 ```C++
+void multiply(std::vector<int>& digits, int x) {
+    int carry = 0;
+    for (int& d : digits) {
+        int product = d * x + carry;
+        d = product % 10;
+        carry = product / 10;
+    }
 
+    while (carry > 0) {
+        digits.push_back(carry % 10);
+        carry /= 10;
+    }
+}
+
+std::vector<int> digits = {1};
+for (int i = 2; i <= 100; i++) {
+  multiply(digits, i);
+}
+int sum = 0;
+for (int d : digits) {
+  sum += d;
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 21

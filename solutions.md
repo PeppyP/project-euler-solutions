@@ -410,9 +410,31 @@ This gives us the answer.
 ## Problem 16
 
 **Pierre Sejourne** - C++  
-
+$2^{100}$ us a 31-digit integer, far too large for native C++ types. But it’s also tame in structure as it's just a power of 2. So, we can use digit-wise arithmetic to simulate it instead.  
+We represent the number as a vector<int> where each element is a digit. We start with 1, and multiply the number by 2, one digit at a time, 100 times. Then sum the elements of the vector.
 ```C++
+void multiplyBy2(std::vector<int>& digits) {
+  int carry = 0;
+  for (size_t i = 0; i < digits.size(); i++) {
+    int product = digits[i] * 2 + carry;
+    digits[i] = product%10;
+    carry = product / 10;
+  }
+  while (carry > 0) {
+    digits.push_back(carry%10);
+    carry /= 10;
+  }
+}
 
+std::vector<int> digits = {1};
+for (int i = 1; i <= 1000; i++) {
+  multiplyBy2(digits);
+}
+int sum = 0;
+for (int digit : digits) {
+  sum += digit;
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 17

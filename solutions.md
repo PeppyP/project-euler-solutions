@@ -278,9 +278,67 @@ std::cout <<  maxProduct << std::endl;
 ## Problem 12
 
 **Pierre Sejourne** - C++  
-
+The trick lies in efficiently calculating the number of divisors of a number. We do this by prime factorization: if $n = p_1^{a_1}\cdot p_2^{a_2}\cdot ...\cdot p_k^{a_k}$.  
+Then the total number of divisors is given by $(a_1 + 1)(a_2 + 1)...(a_k + 1)$.  
+To keep things fast, we precompute primes using a sieve and apply this formula to each triangle number. Since each triangle number is a product of $n$ and $n + 1$ (divided by 2), we take advantage of the fact that n and $n + 1$ are coprime, which means we can factor them separately and multiply the result.
 ```C++
+std::vector<int> generatePrimes(int max) {
+  std::vector<bool> isPrime(max + 1, true);
+  std::vector<int> primes;
+  isPrime[0] = isPrime[1] = false;
+  for (int i = 2; i <= max; ++i) {
+    if (isPrime[i]) {
+      primes.push_back(i);
+      for (int j = i * i; j <= max; j += i) {
+        isPrime[j] = false;
+      }
+    }
+  }
+  return primes;
+}
 
+int countDivisors(int n, const std::vector<int>& primes) {
+  int total = 1;
+  int remaining = n;
+  for (int p : primes) {
+    if (p * p > remaining) {
+      break;
+    }
+    int count = 0;
+    while (remaining % p == 0) {
+      remaining /= p;
+      count++;
+    }
+    if (count > 0) {
+    total *= (count + 1);
+    }
+  }
+  if (remaining > 1) {
+    total *= 2;
+  }
+  return total;
+}
+
+std::vector<int> primes = generatePrimes(1000);
+int n = 1;
+while (true) {
+  int a = n;
+  int b = n + 1;
+  if (a%2 == 0) {
+    a /= 2;
+  } else {
+    b /= 2;
+  }
+  int divA = countDivisors(a, primes);
+  int divB = countDivisors(b, primes);
+  if (divA * divB > 500) {
+    long long triangle = 1LL * n * (n+1)/2;
+    std::cout << triangle << std::endl;
+    break;
+  }
+  n++;
+}
+return 0;
 ```
 ---
 ## Problem 13

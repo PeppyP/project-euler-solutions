@@ -860,25 +860,98 @@ std::cout << sum << std::endl;
 ## Problem 29
 
 **Pierre Sejourne** - C++  
-
+Some values of a are perfect powers: for instance, $4=2^2, 8=2^3, 9=3^2$.  
+So if we compute both $4^3=64$ and $8^2=64$, they are numerically equal. To ensure we count only distinct values of $a^b$, we need to avoid overcounting values that result from equivalent exponentiations.  
+We'll use arbitrary-precision arithmetic to store large power values as strings to avoid precision loss and detect duplicates efficiently.
 ```C++
+std::string multiply(const std::string& num1, const std::string& num2) {
+  int n = num1.size(), m = num2.size();
+  std::vector<int> result(n + m, 0);
+  for (int i = n - 1; i >= 0; i--) {
+    for (int j = m - 1; j >= 0; j--) {
+      int mul = (num1[i] - '0') * (num2[j] - '0');
+      int sum = result[i + j + 1] + mul;
+      result[i + j + 1] = sum % 10;
+      result[i + j] += sum / 10;
+    }
+  }
+  std::string res;
+  for (int digit : result) {
+    if (!res.empty() || digit) {
+      res += digit + '0';
+    }
+  }
+  return res.empty() ? "0" : res;
+}
 
+std::string power(int a, int b) {
+  std::string result = "1";
+  std::string base = std::to_string(a);
+  for (int i = 0; i < b; i++) {
+    result = multiply(result, base);
+  }
+  return result;
+}
+
+std::set<std::string> terms;
+for (int a = 2; a <= 100; b++) {
+  for (int b = 2; b <= 100; b++) {
+    terms.insert(power(a, b));
+  }
+}
+std::cout << terms.size() << std::endl;
 ```
 ---
 ## Problem 30
 
 **Pierre Sejourne** - C++  
+This problem is naturally constrained. For a number with k digits, the maximum sum of the fifth powers of its digits is: $k\cdot 9^5$. But the smallest number with k digits is $10^{k-1}$.  
+So, we find where $k\cdot 9^5<10^{k-1}$  
+Testing this quickly: 
+- For k = 6: $6\cdot 9^5=354294$, and $10^5=100000\rightarrow$ Valid.
+- For k = 7: $7\cdot 9^5=413343$, and $10^6=1000000\rightarrow$ Invalid.
 
+So, we only need to check up to 354294.
 ```C++
+int digitPowerSum(int n, const std::vector<int>& powers) {
+  int sum = 0;
+  while (n > 0) {
+    int digit = n % 10;
+    sum += powers[digit];
+    n /= 10;
+  }
+  return sum;
+}
 
+const int power = 5;
+int totalSum = 0;
+std::vector<int> powers(10);
+for (int i = 0; i <= 9; i++) {
+  powers[i] = std::pow(i, power);
+}
+for (int i = 10; i <= 354294; i++) {
+  if (i == digitPowerSum(i, powers)) {
+    totalSum += i;
+  }
+}
+std::cout << totalSum << std::endl;
 ```
 ---
 ## Problem 31
 
 **Pierre Sejourne** - C++  
-
+Each coin can be used 0 or more times, so the number of combinations becomes a matter of choosing how many of each coin to include such that the total equals 200.  
+This is exactly what dynamic programming is built for. We define a one-dimensional array, which represents the number of ways to make amount i using the given set of coins. For each coin, we iterate through all values from the coin's value up to 200 and update the number of combinations accordingly.
 ```C++
-
+std::vector<int> coins = {1, 2, 5, 10, 20, 50, 100, 200};
+std::vector<long long> ways(201, 0);
+ways[0] = 1;
+for (int coin : coins) {
+  for (int amount = coin; amount <= 200; amount++) {
+    ways[amount] += ways[amount - coin];
+  }
+}
+std::cout << ways[200] << std::endl;
 ```
 ---
 ## Problem 32

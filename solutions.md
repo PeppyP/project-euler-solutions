@@ -1,9 +1,9 @@
 ## Problem 1 
 
 **Pierre Sejourne** - C++    
-The sum of all natural numbers up to x is given by $\frac{x * (x + 1)}{2}\$. This is faster than looping through each integer between 1 and 1000.  
-However, we're looking for the sum of a subset of those numbers, specifically every 3rd and 5th. This can be done by substituting $x$ for $\frac{x}{n}\$, then multiplying the result by $n$, where $n$ is the factor of the subset we want.  
-For mathematical justification of this, call the triangular sum $f(x)$. Dividing the input reduces the range of $f(x)$, then scaling the function effectively converts the range from sequential integers to multiples of $n$. So, for $f(9)$, the function effectively sums the set {1, 2, 3, 4, 5, 6, 7, 8, 9}, for $f(\frac{9}{3}\)$, the function sums {1, 2, 3}. Multiplying $1 + 2 +3$ by 3 gives you {3, 6, 9}, the set that we want.   
+The sum of all natural numbers up to x is given by $\frac{x * (x + 1)}{2}$. This is faster than looping through each integer between 1 and 1000.  
+However, we're looking for the sum of a subset of those numbers, specifically every 3rd and 5th. This can be done by substituting $x$ for $\frac{x}{n}$, then multiplying the result by $n$, where $n$ is the factor of the subset we want.  
+For mathematical justification of this, call the triangular sum $f(x)$. Dividing the input reduces the range of $f(x)$, then scaling the function effectively converts the range from sequential integers to multiples of $n$. So, for $f(9)$, the function effectively sums the set {1, 2, 3, 4, 5, 6, 7, 8, 9}, for $f(\frac{9}{3})$, the function sums {1, 2, 3}. Multiplying $1 + 2 +3$ by 3 gives you {3, 6, 9}, the set that we want.   
 However, if we just sum every 3rd number and every 5th number, multiples of 15 will be counted twice, since $15 = 3 * 5$. Solving this is as easy as considering every 15th number and subtracting that from the total.  
 This could easily be made into a function, but I felt it unnecessary given the lack of variation in the problem and how it would only have 3 calls. It would make it look cleaner but wouldn't simplify anything.
 ```C++
@@ -296,7 +296,6 @@ std::vector<int> generatePrimes(int max) {
   }
   return primes;
 }
-
 int countDivisors(int n, const std::vector<int>& primes) {
   int total = 1;
   int remaining = n;
@@ -338,7 +337,6 @@ while (true) {
   }
   n++;
 }
-return 0;
 ```
 ---
 ## Problem 13
@@ -357,7 +355,6 @@ while (getline(ss, line)) {
 }
 std::string result = std::to_string((long long)total);
 std::cout << result.substr(0, 10) << std::endl;
-return 0;
 ```
 ---
 ## Problem 14
@@ -489,14 +486,13 @@ std::vector<std::vector<int>> parseTriangle(const std::string& data) {
   while (!iss.eof()) {
     std::vector<int> currentRow;
     for (int i = 0; i < row && iss >> value; i++) {
-        currentRow.push_back(value);
+      currentRow.push_back(value);
     }
     triangle.push_back(currentRow);
     row++;
   }
   return triangle;
 }
-
 int maximumPathSum(std::vector<std::vector<int>>& triangle) {
   for (int row = triangle.size() - 2; row >= 0; row--) {
     for (size_t col = 0; col < triangle[row].size(); col++) {
@@ -554,17 +550,17 @@ Factorials grow very fast, too fast to be easily stored in native c++ types.
 So, we instead store $100!$ in a vector\<int\> as each digit of the result. Each multiplication step behaves like a convolution of a number with a digit array, and carries are propagated just like in arithmetic.  
 ```C++
 void multiply(std::vector<int>& digits, int x) {
-    int carry = 0;
-    for (int& d : digits) {
-        int product = d * x + carry;
-        d = product % 10;
-        carry = product / 10;
-    }
+  int carry = 0;
+  for (int& d : digits) {
+    int product = d * x + carry;
+    d = product % 10;
+    carry = product / 10;
+  }
 
-    while (carry > 0) {
-        digits.push_back(carry % 10);
-        carry /= 10;
-    }
+  while (carry > 0) {
+    digits.push_back(carry % 10);
+    carry /= 10;
+  }
 }
 
 std::vector<int> digits = {1};
@@ -604,7 +600,7 @@ int sumOfProperDivisors(int n) {
 
 std::vector<int> divisorSums(10000, 0);
 for (int i = 1; i < 10000; i++) {
-    divisorSums[i] = sumOfProperDivisors(i);
+  divisorSums[i] = sumOfProperDivisors(i);
 }
 int sum = 0;
 for (int a = 2; a < 10000; a++) {
@@ -638,10 +634,10 @@ std::string current;
 for (char ch : line) {
   if (ch == '"') continue;
   if (ch == ',') {
-      names.push_back(current);
-      current.clear();
+    names.push_back(current);
+    current.clear();
   } else {
-      current += ch;
+    current += ch;
   }
 }
 if (!current.empty()) {
@@ -677,29 +673,28 @@ int sumOfProperDivisors(int n) {
   return sum;
 }
 
-const int LIMIT = 28123;
 std::vector<int> abundantNumbers;
 for (int i = 12; i <= 28123; i++) {
-    if (sumOfProperDivisors(i) > i) {
-        abundantNumbers.push_back(i);
-    }
+  if (sumOfProperDivisors(i) > i) {
+    abundantNumbers.push_back(i);
+  }
 }
 std::vector<bool> canBeWrittenAsAbundantSum(28123 + 1, false);
 for (size_t i = 0; i < abundantNumbers.size(); i++) {
-    for (size_t j = i; j < abundantNumbers.size(); j++) {
-        int sum = abundantNumbers[i] + abundantNumbers[j];
-        if (sum <= 28123) {
-            canBeWrittenAsAbundantSum[sum] = true;
-        } else {
-            break;
-        }
+  for (size_t j = i; j < abundantNumbers.size(); j++) {
+    int sum = abundantNumbers[i] + abundantNumbers[j];
+    if (sum <= 28123) {
+      canBeWrittenAsAbundantSum[sum] = true;
+    } else {
+      break;
     }
+  }
 }
 int totalSum = 0;
 for (int i = 1; i <= 28123; i++) {
-    if (!canBeWrittenAsAbundantSum[i]) {
-        totalSum += i;
-    }
+  if (!canBeWrittenAsAbundantSum[i]) {
+    totalSum += i;
+  }
 }
 std::cout << totalSum << std::endl;
 ```
@@ -802,7 +797,6 @@ std::vector<bool> generatePrimeSieve(int max) {
   }
   return sieve;
 }
-
 int countConsecutivePrimes(int a, int b, const std::vector<bool>& sieve) {
   int n = 0;
   while (true) {
@@ -883,7 +877,6 @@ std::string multiply(const std::string& num1, const std::string& num2) {
   }
   return res.empty() ? "0" : res;
 }
-
 std::string power(int a, int b) {
   std::string result = "1";
   std::string base = std::to_string(a);
@@ -1022,8 +1015,8 @@ bool isCurious(int num, int den) {
 }
 
 int prod_num = 1, prod_den = 1;
-for (int num = 10; num < 100; ++num) {
-  for (int den = num + 1; den < 100; ++den) {
+for (int num = 10; num < 100; num++) {
+  for (int den = num + 1; den < 100; den++) {
     if (isCurious(num, den)) {
       prod_num *= num;
       prod_den *= den;
@@ -1037,17 +1030,84 @@ std::cout << (prod_den / g) << std::endl;
 ## Problem 34
 
 **Pierre Sejourne** - C++  
-
+To solve this problem, we search for numbers equal to the sum of the factorials of their digits, excluding trivial single-digit cases like 1 and 2. We precompute the factorials of digits 0–9 to avoid recomputing them, and iterate from 10 upwards to a logical upper bound: since 7 × 9! = 2,540,160 is the largest value a 7-digit number can reach by summing digit factorials, anything beyond this cannot possibly satisfy the condition. For each number, we extract its digits, sum their factorials, and check if the result matches the original number. All matches are accumulated, and the final output is the sum of all such “curious” numbers, which results in 40730.
 ```C++
+std::vector<int> computeFactorials() {
+  std::vector<int> fact(10, 1);
+  for (int i = 1; i <= 9; i++) {
+    fact[i] = fact[i - 1] * i;
+  }
+  return fact;
+}
+bool isCurious(int n, const std::vector<int>& fact) {
+  int sum = 0, temp = n;
+  while (temp > 0) {
+    sum += fact[temp % 10];
+    temp /= 10;
+  }
+  return sum == n;
+}
 
+std::vector<int> fact = computeFactorials();
+int total = 0;
+for (int i = 10; i <= 2540160; i++) {
+  if (isCurious(i, fact)) {
+    total += i;
+  }
+}
+std::cout << total << std::endl;
 ```
 ---
 ## Problem 35
 
 **Pierre Sejourne** - C++  
-
+First: generating a prime sieve using the Sieve of Eratosthenes.  
+Then we can just check each number to see if it’s a prime and if hasn’t been previously verified through other rotations by rotating the digits of each candidate numbe, and the count is incremented by the number of valid circular forms.
 ```C++
+std::vector<bool> generatePrimeSieve(int max) {
+  std::vector<bool> sieve(max + 1, true);
+  sieve[0] = sieve[1] = false;
+  for (int i = 2; i * i <= max; i++) {
+    if (sieve[i]) {
+      for (int j = i * i; j <= max; j += i) {
+        sieve[j] = false;
+      }
+    }
+  }
+  return sieve;
+}
+std::vector<int> getRotations(int n) {
+  std::vector<int> rotations;
+  std::string s = std::to_string(n);
+  for (int i = 0; i < s.size(); i++) {
+    s = s.substr(1) + s[0];
+    rotations.push_back(stoi(s));
+  }
+  return rotations;
+}
 
+std::vector<bool> sieve = generatePrimes(1000000);
+std::unordered_set<int> checked;
+int count = 0;
+for (int i = 2; i < 1000000; i++) {
+  if (sieve[i] && checked.count(i) == 0) {
+    bool allPrime = true;
+    std::vector<int> rotations = getRotations(i);
+    for (int rot : rotations) {
+      if (!sieve[rot]) {
+          allPrime = false;
+          break;
+      }
+    }
+    if (allPrime) {
+      for (int rot : rotations) {
+        checked.insert(rot);
+      }
+      count += rotations.size();
+    }
+  }
+}
+std::cout << count << std::endl;
 ```
 ---
 ## Problem 36

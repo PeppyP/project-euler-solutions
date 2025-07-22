@@ -186,7 +186,7 @@ std::cout << maxProduct << std::endl;
 
 **Pierre Sejourne** - C++    
 The values for a, b, c need to fulfill the following criteria: $a^2 + b^2 = c^2$ and $a + b + c = 1000$. We can use this to weed out $a < 333$ and $b < 500$.
-This leaves us with 111555 calculations (Sum of first 333 terms of $u<sub>1</sub> = 166, d = 1$), which is fast enough to compute within a reasonable amount of time, 1.37 seconds for me.  
+This leaves us with 111555 calculations (Sum of first 333 terms of $u_1 = 166, d = 1$ ), which is fast enough to compute within a reasonable amount of time, 1.37 seconds for me.  
 There are of course better methods for finding Pythagorian triples, such as the sets of solutions given by Euclid's formula.  
 ```C++
 int a, b, c;
@@ -957,17 +957,81 @@ std::cout << ways[200] << std::endl;
 ## Problem 32
 
 **Pierre Sejourne** - C++  
-
+1-9 pandigital numbers gives us: $9! = 362,880$ permutations of the digits 1 to 9.  
+Let: a be the multiplicand, b the multiplier, and c the product
+We must follow the identity $a × b = c$, and the concatenation of a, b, and c must be a permutation of 123456789.  
+To reduce complexity we can observe digit counts, If a has $d_1$ digits, b has $d_2$ digits, and c has $d_3$ digits, then $d_1 + d_2 + d_3 = 9$. Because of these two rules and how multiplication works, we can consider only configurations like 1-digit × 4-digit = 4-digit or 2-digit × 3-digit = 4-digit.  
+All other combinations either overflow or underflow the digit limit.
 ```C++
+int toInt(const std::string& s, int start, int len) {
+    return std::stoi(s.substr(start, len));
+}
 
+std::string digits = "123456789";
+std::set<int> products;
+while (next_permutation(digits.begin(), digits.end())) {
+  int a = toInt(digits, 0, 1);
+  int b = toInt(digits, 1, 4);
+  int c = toInt(digits, 5, 4);
+  if (a * b == c) {
+    products.insert(c);
+  }
+  a = toInt(digits, 0, 2);
+  b = toInt(digits, 2, 3);
+  c = toInt(digits, 5, 4);
+  if (a * b == c) {
+    products.insert(c);
+  }
+}
+int sum = 0;
+for (int p : products) {
+  sum += p;
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 33
 
 **Pierre Sejourne** - C++  
-
+Let $\frac{a}{b}$ be a fraction with: a, b both two-digit numbers from 10 to 99, a < b so that the value is less than 1.  
+We aim to identify cases where a common digit can be improperly “cancelled” to form a new fraction without that digit, $\frac{a'}{b'}$, where $\frac{a}{b}$ = $\frac{a'}{b'}$, numerically. We can also explicitly exclude cases with two trailing 0s where the cancelling mathematically valid and any cancellation that involves zero or leads to invalid numbers (like zero in the denominator). The test our algorithm uses is $a × b' = b × a'$ which avoids storing floating-point comparisons.
 ```C++
+bool isCurious(int num, int den) {
+  std::string n = std::to_string(num);
+  std::string d = std::to_string(den);
+  if (n[1] == '0' && d[1] == '0') {
+    return false;
+  }
+  for (int i = 0; i < 2; ++i) {
+    for (int j = 0; j < 2; ++j) {
+      if (n[i] == d[j] && n[i] != '0') {
+        char cn = n[1 - i];
+        char cd = d[1 - j];
+        if (cd == '0') {
+            continue; 
+        }
+        int new_num = cn - '0';
+        int new_den = cd - '0';
+        if (num * new_den == den * new_num) {
+            return true;
+        }
+      }
+    }
+  }
+  return false;
+}
 
+int prod_num = 1, prod_den = 1;
+for (int num = 10; num < 100; ++num) {
+  for (int den = num + 1; den < 100; ++den) {
+    if (isCurious(num, den)) {
+      prod_num *= num;
+      prod_den *= den;
+    }
+  }
+}
+int g = std::gcd(prod_num, prod_den);
+std::cout << (prod_den / g) << std::endl;
 ```
 ---
 ## Problem 34

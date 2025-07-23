@@ -1290,17 +1290,73 @@ std::cout << product << std::endl;
 ## Problem 41
 
 **Pierre Sejourne** - C++  
-
+Recognize that 9 and 8‑digit pandigital numbers will always sum to multiples of 3 and therefore cannot be prime. So, we start with the highest 7‑digit pandigital, 7654321, and generates all its permutations in descending order.  
+Then we convert each to an integer and test it for primality with a sieve of Erastosthenes until we finds the first and hence largest prime.
 ```C++
+std::vector<bool> generatePrimeSieve(int limit) {
+  std::vector<bool> sieve(limit+1, false);
+  for (int i = 3; i < limit; i += 2) {
+    sieve[i] = true;
+  }
+  sieve[2] = true;
+  for (int i = 3; i * i < limit; i++) {
+    if (sieve[i]) {
+      for (int j = i * i; j < limit; j += i) {
+        sieve[j] = false;
+      }
+    }
+  }
+  return sieve;
+}
 
+std::vector<bool> sieve = generatePrimeSieve(7654321);
+std::string s = "7654321";
+while (std::prev_permutation(s.begin(), s.end())) {
+  int x = std::stoi(s);
+  if (sieve[x]) {
+    std::cout << x << std::endl;
+    break;
+  }
+}
 ```
 ---
 ## Problem 42
 
 **Pierre Sejourne** - C++  
-
+We can solve this problem in two steps (*three, but I'm not including parsing words.txt), converting each word into a numerical value, and finding how many of those appear in the set of triangle numbers up to the highest word value.  
+Since the highest word value is relatively small, this runs very quickly.
 ```C++
-
+std::ifstream file("words.txt");
+std::string content;
+std::getline(file, content);
+file.close();
+/*
+  Parse words between quotation marks
+*/
+std::vector<int> wordValues;
+wordValues.reserve(words.size());
+int maxValue = 0;
+for (auto &w : words) {
+  int sum = 0;
+  for (char c : w) {
+    sum += (c - 'A' + 1);
+  }
+  wordValues.push_back(sum);
+  if (sum > maxValue) {
+    maxValue = sum;
+  }
+}
+std::unordered_set<int> triangles;
+for (int n = 1; n * (n + 1) / 2 <= maxValue; n++) {
+  triangles.insert(n * (n + 1) / 2);
+}
+int count = 0;
+for (int v : wordValues) {
+  if (triangles.count(v)) {
+    count++;
+  }
+}
+std::cout <<  count << std::endl;
 ```
 ---
 ## Problem 43

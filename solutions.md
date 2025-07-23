@@ -785,12 +785,15 @@ At n=0, the quadratic becomes f(0)=b, so b must be prime.
 At n=1, f(1)=1+a+b must also be prime.  
 With these starting points, we can precompute a list of prime numbers (via the Sieve of Eratosthenes) up to a reasonable upper bound, and check the prime results of any given quadratic function for a and b.
 ```C++
-std::vector<bool> generatePrimeSieve(int max) {
-  std::vector<bool> sieve(max + 1, true);
-  sieve[0] = sieve[1] = false;
-  for (int i = 2; i * i <= max; i++) {
+std::vector<bool> generatePrimeSieve(int limit) {
+  std::vector<bool> sieve(limit+1, false);
+  for (int i = 3; i < limit; i += 2) {
+    sieve[i] = true;
+  }
+  sieve[2] = true;
+  for (int i = 3; i * i < limit; i++) {
     if (sieve[i]) {
-      for (int j = i * i; j <= max; j += i) {
+      for (int j = i * i; j < limit; j += i) {
         sieve[j] = false;
       }
     }
@@ -1064,12 +1067,15 @@ std::cout << total << std::endl;
 First: generating a prime sieve using the Sieve of Eratosthenes.  
 Then we can just check each number to see if it’s a prime and if hasn’t been previously verified through other rotations by rotating the digits of each candidate numbe, and the count is incremented by the number of valid circular forms.
 ```C++
-std::vector<bool> generatePrimeSieve(int max) {
-  std::vector<bool> sieve(max + 1, true);
-  sieve[0] = sieve[1] = false;
-  for (int i = 2; i * i <= max; i++) {
+std::vector<bool> generatePrimeSieve(int limit) {
+  std::vector<bool> sieve(limit+1, false);
+  for (int i = 3; i < limit; i += 2) {
+    sieve[i] = true;
+  }
+  sieve[2] = true;
+  for (int i = 3; i * i < limit; i++) {
     if (sieve[i]) {
-      for (int j = i * i; j <= max; j += i) {
+      for (int j = i * i; j < limit; j += i) {
         sieve[j] = false;
       }
     }
@@ -1086,7 +1092,7 @@ std::vector<int> getRotations(int n) {
   return rotations;
 }
 
-std::vector<bool> sieve = generatePrimes(1000000);
+std::vector<bool> sieve = generatePrimeSieve(1000000);
 std::unordered_set<int> checked;
 int count = 0;
 for (int i = 2; i < 1000000; i++) {
@@ -1113,41 +1119,172 @@ std::cout << count << std::endl;
 ## Problem 36
 
 **Pierre Sejourne** - C++  
-
+Since any even number’s binary form would end in 0 and thus imply a leading zero if it were a palindrome, we can iterate only over odd integers.  
+Checking each string for palindrome‑ness can be done with a two‑pointer scan, which runs in $O(n)$ time without writing to memory, and accumulating those that pass both tests.
 ```C++
+bool isPalindrome(const std::string &s) {
+  int i = 0, j = s.size() - 1;
+  while (i < j) {
+    if (s[i++] != s[j--]) {
+      return false;
+    }
+  }
+  return true;
+}
+std::string toBinary(int n) {
+  std::string b;
+  while (n > 0) {
+    b.push_back(char('0' + (n & 1)));
+    n >>= 1;
+  }
+  reverse(b.begin(), b.end());
+  return b;
+}
 
+long long sum = 0;
+for (int i = 1; i < 1000000; i += 2) {
+  std::string dec = std::to_string(i);
+  if (isPalindrome(dec)) {
+    std::string bin = toBinary(i);
+    if (isPalindrome(bin)) {
+      sum += i;
+    }
+  }
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 37
 
 **Pierre Sejourne** - C++  
-
+First, we need a prime‑lookup table, which can easily be gotten via the Sieve of Eratosthenes.  
+After, we can check each candidate for right‑truncatability by repeatedly dividing by 10 and testing primality, and for left‑truncatability by converting to a string and successively stripping off the first character.  
+It seems like checking each value like this would be inefficient, but this approach runs in only $O(n\log{\log{n}})$ for sieving and $O(d(P)\cdot n)$ for checking, comfortably efficient for under a million.
 ```C++
+std::vector<bool> generatePrimeSieve(int limit) {
+  std::vector<bool> sieve(limit+1, false);
+  for (int i = 3; i < limit; i += 2) {
+    sieve[i] = true;
+  }
+  sieve[2] = true;
+  for (int i = 3; i * i < limit; i++) {
+    if (sieve[i]) {
+      for (int j = i * i; j < limit; j += i) {
+        sieve[j] = false;
+      }
+    }
+  }
+  return sieve;
+}
+bool isTruncatable(int n, const std::vector<bool>& sieve) {
+  int x = n;
+  while (x > 0) {
+    if (!sieve[x]) {
+      return false;
+    }
+    x /= 10;
+  }
+  std::string s = std::to_string(n);
+  for (size_t i = 1; i < s.size(); i++) {
+    int t = std::stoi(s.substr(i));
+    if (!sieve[t]) {
+      return false;
+    }
+  }
+  return true;
+}
 
+std::vector<bool> sieve = generatePrimeSieve(1000000);
+int count = 0;
+long long sum = 0;
+for (int p = 11; p < 1000000 && count < 11; p++) {
+  if (sieve[p] && isTruncatable(p, sieve)) {
+    sum += p;
+    count++;
+  }
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 38
 
 **Pierre Sejourne** - C++  
-
+We can search every integer x from 1 up to 9999, since any larger base would force the concatenated products of $x×1$ and $x×2$ to exceed nine digits, by building a string of $x×1, x×2, …, x×n$ until its length reaches nine, then testing via a single‐pass boolean array whether the nine‐character result contains each digit 1 through 9 exactly once.  
+Whenever it does, we convert it to an integer, then compare against our running maximum, and at the end print the largest such 9‑digit pandigital number.
 ```C++
+bool isPandigital(const std::string &s) {
+    if (s.size() != 9) {
+      return false;
+    }
+    bool seen[10] = {false};
+    for (char c : s) {
+        int d = c - '0';
+        if (d == 0 || seen[d]) {
+          return false;
+        }
+        seen[d] = true;
+    }
+    return true;
+}
 
+int maxPandigital = 0;
+for (int x = 1; x < 10000; x++) {
+  std::string s;
+  for (int n = 1; s.size() < 9; n++) {
+      s += std::to_string(x * n);
+  }
+  if (isPandigital(s)) {
+    int val = std::stoi(s);
+    if (val > maxPandigital) {
+        maxPandigital = val;
+    }
+  }
+}
+std::cout << maxPandigital << std::endl;
 ```
 ---
 ## Problem 39
 
 **Pierre Sejourne** - C++  
-
+Thanks to the low constraint, we can simply iterate through every integer perimeter p from 1 to 1000, and for each uses two nested loops from 1 to $\frac{p}{3}$ and b from $a+1$ to $\frac{p-a}{2}$ to derive $c = p−a−b$ and check the Pythagorean condition $a² + b²=c²$.  
+Tallying how many distinct integer triples exist; it keeps track of the perimeter that yields the highest count.  
+Once again, while it would seem that nesting three loops would cause the program to run slowly, the low constraint means it runs in roughly $O(1000\cdot\frac{p}{3}\cdot\frac{p}{2}) ≈ 10^6$ operations, which is quick in practice.
 ```C++
-
+int bestP = 0, maxCount = 0;
+for (int p = 1; p <= 1000; p++) {
+  int count = 0;
+  for (int a = 1; a <= p/3; a++) {
+    for (int b = a + 1; b <= (p - a) / 2; b++) {
+      int c = p - a - b;
+      if (a*a + b*b == c*c) {
+        count++;
+      }
+    }
+  }
+  if (count > maxCount) {
+    maxCount = count;
+    bestP = p;
+  }
+}
+cout << bestP << endl;
 ```
 ---
 ## Problem 40
 
 **Pierre Sejourne** - C++  
-
+Champernowne’s constant! We can build the fractional part of the constant by concatenating the decimal representations of 1, 2, 3, … into a single string, stopping once we’ve passed the one‑millionth digit, then multiply  the digits at positions 1, 10, 100, 1,000, 10,000, 100,000, and 1,000,000.  
+This runs in linear time and memory proportional to one million characters, which is fairly trivial.
 ```C++
-
+std::vector<int> targets = {1, 10, 100, 1000, 10000, 100000, 1000000};
+std::string champer = "0.";
+for (int i = 1; champer.size() <= 1000001; i++) {
+  champer += std::to_string(i);
+}
+long long product = 1;
+for (int t : targets) {
+  product *= (champer[t + 1] - '0');
+}
+std::cout << product << std::endl;
 ```
 ---
 ## Problem 41

@@ -1276,13 +1276,13 @@ Champernowne’s constant! We can build the fractional part of the constant by c
 This runs in linear time and memory proportional to one million characters, which is fairly trivial.
 ```C++
 std::vector<int> targets = {1, 10, 100, 1000, 10000, 100000, 1000000};
-std::string champer = "0.";
+std::string champer = "";
 for (int i = 1; champer.size() <= 1000001; i++) {
   champer += std::to_string(i);
 }
 long long product = 1;
 for (int t : targets) {
-  product *= (champer[t + 1] - '0');
+  product *= (champer[t - 1] - '0');
 }
 std::cout << product << std::endl;
 ```

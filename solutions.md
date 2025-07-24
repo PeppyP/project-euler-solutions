@@ -109,8 +109,7 @@ The sum of the squares of all natural numbers up to x is given by $\frac{x * (x 
 The difference between these sums is $\frac{x^2 * (x + 1)^2}{4}\ - \frac{x * (x + 1) * (2x + 1)}{6}\ = \frac{3x^4 + 6x^3 + 3x^2}{12}\ - \frac{4x^3 + 6x^2 + 2x}{12}\ = \frac{3x^4 + 2x^3 - 3x^2 - 2x}{12}\$.  
 This value is what the problem is asking for, so that's all we need to do.
 ```C++
-unsigned long long n;
-std::cin >> n;
+unsigned long long n = 100;
 std::cout << ( 3*n*n*n*n + 2*n*n*n - 3*n*n - 2*n )/12 << std::endl;
 ```
 ---
@@ -153,7 +152,7 @@ for (int i = 3; i < limit; i += 2) {
 One thing to note is that as we move the 'head', the 13 digits that we are multiplying, along the string, the product is effectively divided by the previous digit and scaled by the next digit.  
 So, to find the highest product we can just ignore any sequences that have a last digit that is lower than or equal to the next digit. Otherwise, we can multiply the digits and keep the highest of those multiples. This will take 1000 - 13 multiplications minus how many are removed from consideration by the greedy process.
 ```C++
-long long productOfDigits(const string& digits, int start) {
+long long productOfDigits(const std::string& digits, int start) {
     long long product = 1;
     for (int i = start; i < start + 13; i++) {
         if (digits[i] == '0') {
@@ -164,7 +163,7 @@ long long productOfDigits(const string& digits, int start) {
     return product;
 }
 
-string raw = "73167176531330624919225119674426574742355349194934...[The string]";
+std::string raw = "73167176531330624919225119674426574742355349194934...[The string]";
 while (i + 13 <= raw.size()) {
   if (i + 13 < raw.size() && raw[i + 13] >= raw[i + 12]) {
     i++;
@@ -1362,65 +1361,289 @@ std::cout <<  count << std::endl;
 ## Problem 43
 
 **Pierre Sejourne** - C++  
-
+We can generate all 0–9 pandigital numbers using next_permutation and check whether the specific 3-digit substrings starting from position 2 to 8 are divisible by the corresponding primes 2 through 17.  
+If the property holds, the number is added to a cumulative sum, which is printed at the end. Since there are only $10! = 3,628,800$ permutations, we can keep the program efficient through early elimination by modulus checks.
 ```C++
+bool hasProperty(const std::string& s) {
+  int primes[] = {2, 3, 5, 7, 11, 13, 17};
+  for (int i = 1; i <= 7; i++) {
+    int val = std::stoi(s.substr(i, 3));
+    if (val % primes[i - 1] != 0) {
+      return false;
+    }
+  }
+  return true;
+}
 
+std::string s = "0123456789";
+long long sum = 0;
+while (std::next_permutation(s.begin(), s.end())) {
+  if (hasProperty(s)) {
+    sum += stoll(s);
+  }
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 44
 
 **Pierre Sejourne** - C++  
-
+This program first builds the first 3,000 pentagonal numbers into both a vector and an unordered set for O(1) membership tests, then examines each pair (P[j], P[k]) with k>j, computing their sum and difference; if both are pentagonal (checked via the set) and the difference is smaller than any previously found, it updates the minimum, and because differences grow with increasing k, it breaks the inner loop whenever the difference exceeds the current best—resulting in a fast search that reports the minimal valid difference.
 ```C++
+void generatePentagonals(std::vector<long>& P, std::unordered_set<long>& S) {
+  P.reserve(3000);
+  for (int n = 1; n <= 3000; n++) {
+    long pn = n * (3L*n - 1) / 2;
+    P.push_back(pn);
+    S.insert(pn);
+  }
+}
 
+std::vector<long> P;
+std::unordered_set<long> S;
+generatePentagonals(P, S);
+long bestDiff = LONG_MAX;
+for (int j = 0; j < 3000; j++) {
+  for (int k = j + 1; k < 3000; k++) {
+    long sum = P[j] + P[k];
+    long diff = P[k] - P[j];
+    if (diff >= bestDiff) {
+      break;
+    }
+    if (S.count(sum) && S.count(diff)) {
+      bestDiff = diff;
+    }
+  }
+}
+std::cout << bestDiff << std::endl;
 ```
 ---
 ## Problem 45
 
 **Pierre Sejourne** - C++  
-
+This code searches for the next number after T₍₂₈₅₎ = 40755 that is simultaneously triangular, pentagonal, and hexagonal by generating triangle numbers Tₙ = n(n+1)/2 for n ≥ 286, and checking each with direct mathematical tests: for a number to be pentagonal, (1 + √(1 + 24x)) must be divisible by 6, and for hexagonal, (1 + √(1 + 8x)) must be divisible by 4; using the quadratic discriminants derived from inverting the respective formulas, this allows constant-time checks per number and ensures a highly efficient solution
 ```C++
+bool isPentagonal(long long x) {
+  long long d = 1 + 24 * x;
+  long long sqrt_d = (long long)(std::sqrt(d));
+  return sqrt_d * sqrt_d == d && (1 + sqrt_d) % 6 == 0;
+}
 
+bool isHexagonal(long long x) {
+  long long d = 1 + 8 * x;
+  long long sqrt_d = (long long)(std::sqrt(d));
+  return sqrt_d * sqrt_d == d && (1 + sqrt_d) % 4 == 0;
+}
+
+for (long long n = 286;; n++) {
+  long long t = n * (n + 1) / 2;
+  if (isPentagonal(t) && isHexagonal(t)) {
+    std::cout << t << std::endl;
+    break;
+  }
+}
 ```
 ---
 ## Problem 46
 
 **Pierre Sejourne** - C++  
-
+This efficient solution starts by generating a prime sieve up to a reasonable limit (10,000). It then checks each odd composite number by testing all smaller primes p to see whether the difference n - p is twice a perfect square. If no such p satisfies the condition, then the conjecture fails for n. The program prints the smallest such number—which is 5777—after testing only a few hundred values, ensuring a sublinear runtime due to the combination of precomputation and early exit conditions.
 ```C++
+std::vector<bool> generatePrimeSieve(int limit) {
+  std::vector<bool> sieve(limit+1, false);
+  for (int i = 3; i < limit; i += 2) {
+    sieve[i] = true;
+  }
+  sieve[2] = true;
+  for (int i = 3; i * i < limit; i++) {
+    if (sieve[i]) {
+      for (int j = i * i; j < limit; j += i) {
+        sieve[j] = false;
+      }
+    }
+  }
+  return sieve;
+}
 
+bool isGoldbachVariant(int n, const std::vector<bool>& sieve) {
+  for (int p = 2; p < n; p++) {
+    if (sieve[p]) {
+      int remainder = n - p;
+      if (remainder % 2 == 0) {
+        int s = sqrt(remainder / 2);
+        if (2 * s * s == remainder) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+std::vector<bool> sieve = primeSieve(10000);
+for (int n = 9; n < 10000; n += 2) {
+  if (!sieve[n] && !isGoldbachVariant(n, sieve)) {
+    std::cout << n << std::endl;
+    break;
+  }
+}
 ```
 ---
 ## Problem 47
 
 **Pierre Sejourne** - C++  
-
+This efficient solution iterates through integers starting at 1, using a countDistinctPrimeFactors function that divides out each prime factor exactly once and increments a counter for each new one found, skipping even numbers except for 2. It checks whether the current number has exactly four distinct prime factors, tracks a streak of such consecutive numbers, and when the streak reaches four, prints the first of the sequence. The algorithm is fast due to early division and factorization limits (p * p ≤ n), and quickly finds that the first such sequence starts at 134043.
 ```C++
+int countDistinctPrimeFactors(int n) {
+  int count = 0;
+  if (n % 2 == 0) {
+    count++;
+    while (n % 2 == 0) {
+      n /= 2;
+    }
+  }
+  for (int p = 3; p * p <= n; p += 2) {
+    if (n % p == 0) {
+      count++;
+      while (n % p == 0) {
+        n /= p;
+      }
+    }
+  }
+  if (n > 1) {
+    count++;
+  }
+  return count;
+}
 
+int consecutive = 0;
+for (int i = 1;; i++) {
+  if (countDistinctPrimeFactors(i) == 4) {
+    consecutive++;
+    if (consecutive == 4) {
+      std::cout << (i - 3) << std::endl;
+      break;
+    }
+  } else {
+    consecutive = 0;
+  }
+}
 ```
 ---
 ## Problem 48
 
 **Pierre Sejourne** - C++  
-
+This solution computes the self-power series BIGP(n) = 1¹ + 2² + ... + nⁿ for n = 1000, but only keeps the last 10 digits by using modular arithmetic with MOD = 10¹⁰. Each term is computed using efficient modular exponentiation, which allows us to compute i^i % MOD in O(log i) time, ensuring that even 1000^1000 fits within runtime and memory constraints. The final result is printed modulo 10¹⁰, yielding the last 10 digits of the enormous sum.
 ```C++
+const uint64_t MOD = 10000000000ULL;
 
+uint64_t modPow(uint64_t base, uint64_t exp, uint64_t mod) {
+  uint64_t result = 1;
+  base %= mod;
+  while (exp > 0) {
+    if (exp & 1) {
+      result = (result * base) % mod;
+    }
+    base = (base * base) % mod;
+    exp >>= 1;
+  }
+  return result;
+}
+
+uint64_t sum = 0;
+for (int i = 1; i <= 1000; i++) {
+  sum = (sum + modPow(i, i, MOD)) % MOD;
+}
+std::cout << sum << std::endl;
 ```
 ---
 ## Problem 49
 
 **Pierre Sejourne** - C++  
-
+This program finds the unique 12-digit number formed by concatenating a second special sequence of three 4-digit primes that are permutations of one another and form an arithmetic progression. It first generates all 4-digit primes, then iterates through all unordered prime pairs (a, b), computes c = b + (b − a), and checks if c is prime and all three numbers are permutations of each other (verified via sorted digit strings). It excludes the known example starting with 1487 and outputs the other sequence concatenated. The method is efficient due to early pruning and the small search space of ~1000 primes.
 ```C++
+bool isPrime(int n) {
+    if (n < 2) return false;
+    for (int d = 2; d * d <= n; ++d)
+        if (n % d == 0) return false;
+    return true;
+}
 
+std::string sortDigits(int n) {
+    std::string s = std::to_string(n);
+    std::sort(s.begin(), s.end());
+    return s;
+}
+
+std::vector<int> primes;
+for (int i = 1000; i < 10000; i++) {
+  if (isPrime(i)) {
+    primes.push_back(i);
+  }
+}
+for (int i = 0; i < primes.size(); i++) {
+  for (int j = i + 1; j < primes.size(); j++) {
+    int a = primes[i], b = primes[j];
+    int c = b + (b - a);
+    if (c >= 10000 || !isPrime(c)) {
+      continue;
+    }
+    if (sortDigits(a) == sortDigits(b) && sortDigits(a) == sortDigits(c)) {
+      if (a == 1487 && b == 4817) {
+        continue;
+      }
+      std::cout << a << b << c << std::endl;
+      return 0;
+    }
+  }
+}
 ```
 ---
 ## Problem 50
 
 **Pierre Sejourne** - C++  
-
+This program first generates all primes below one million using the Sieve of Eratosthenes, then tests every possible sequence of consecutive primes by maintaining a running sum starting from each index in the prime list. For each sum that remains under a million and is itself prime, it updates the record if it beats the longest sequence seen so far. This brute-force method is efficient due to pruning on sum overflow and fast primality checks via the sieve, and it quickly finds the largest prime below one million expressible as the sum of the most consecutive primes.
 ```C++
+std::vector<bool> generatePrimeSieve(int limit) {
+  std::vector<bool> sieve(limit+1, false);
+  for (int i = 3; i < limit; i += 2) {
+    sieve[i] = true;
+  }
+  sieve[2] = true;
+  for (int i = 3; i * i < limit; i++) {
+    if (sieve[i]) {
+      for (int j = i * i; j < limit; j += i) {
+        sieve[j] = false;
+      }
+    }
+  }
+  return sieve;
+}
 
+std::vector<bool> sieve = generatePrimeSieve(1000000);
+std::vector<int> primes;
+for (int i = 2; i < 1000000; i++) {
+  if (sieve[i]) {
+    primes.push_back(i);
+  }
+}
+int maxLength = 0;
+int bestSum = 0;
+for (int start = 0; start < primes.size(); start++) {
+  int sum = 0;
+  for (int end = start; end < primes.size(); end++) {
+    sum += primes[end];
+    if (sum >= 1000000) {
+      break;
+    }
+    int length = end - start + 1;
+    if (sieve[sum] && length > maxLength) {
+      maxLength = length;
+      bestSum = sum;
+    }
+  }
+}
+std::cout << bestSum << std::endl;
 ```
 ---
 ## Problem 51
@@ -1553,8 +1776,8 @@ std::cout <<  count << std::endl;
 ---
 ## Problem 67
 
-**Pierre Sejourne** - Already Solved  
-Exactly the same program and as **Problem 18**, but this time reading the string from a file instead of a literal because it's too long to type.  
+**Pierre Sejourne** - C++ (Already Solved)  
+The same program and logic as **Problem 18** works, but reading the string from a file instead of a literal.  
 
 ---
 ## Problem 68

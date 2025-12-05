@@ -1,9 +1,9 @@
 # Project Euler Solutions
 
-> :stop_sign: **This repo contains very explicit hints for programming problems that are not easily repeatable.** :stop_sign: Don't spoil things for yourself without giving it a serious try. 
+> :stop_sign: **This repo contains very explicit hints for programming problems that are not easily repeatable.** Don't spoil things for yourself without giving it a serious try. 
 
 
-A collection of answers, explainations, and reasoning for first 100 Project Euler problems, completed by members of the Churchie Coding Club.
+A collection of answers, explainations, and reasoning for first 100 Project Euler problems.
 
 ## Description:
 solutions.md contains solutions for all of the Project Euler problems we, the Churchie Coding club, have completed whose problem numbers are less than 101. Each listed problem contains the solution method and it's explanation. Most of the problems are either solved in C++ or in Python, and some problems may be solved without using any code.

@@ -1,6 +1,6 @@
 # Project Euler Solutions
 
-> :stop_sign: **This repo contains very explicit hints for programming problems that are not easily repeatable.** Don't spoil things for yourself without giving it a serious try. 
+> **This repo contains answers to problems that are not easily repeatable.** Don't spoil things for yourself without giving it a try. 
 
 
 A collection of answers, explainations, and reasoning for first 100 Project Euler problems.
